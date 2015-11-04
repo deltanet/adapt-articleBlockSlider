@@ -28,6 +28,9 @@
 
 	.block {
 		float: left;
+		.dir-rtl & {
+        	float: right;
+        }
 		width: 100%;
 	}
 
@@ -117,10 +120,18 @@
 
 		&[data-block-slider='left'] {
 			left: 0;
+			.dir-rtl & {
+				left: inherit;
+                right: 0;
+            }
 		}
 
 		&[data-block-slider='right'] {
 			right: 0;
+			.dir-rtl & {
+				right: inherit;
+                left: 0;
+            }
 		}
 	}
 
@@ -168,6 +179,9 @@
 	// Tab Buttons
 	.item-button {
 		float: left;
+		.dir-rtl & {
+        	float: right;
+        }
 		text-align: center;
 		text-decoration: none;
 
