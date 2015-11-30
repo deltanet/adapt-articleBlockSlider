@@ -356,24 +356,24 @@ define([
 
 			if (this.model.get("_articleBlockSlider")._hasUniformHeight) {
 				if (animate === false) {
-					$container.css({"height": maxHeight+"px"});
+					$container.css({"min-height": maxHeight+"px"});
 				} else {
-					$container.velocity("stop").velocity({"height": maxHeight+"px"}, {duration: duration });//, easing: "ease-in"});
+					$container.velocity("stop").velocity({"min-height": maxHeight+"px"}, {duration: duration });//, easing: "ease-in"});
 				}
 			} else if (currentHeight <= blockHeight) {
 
 				if (animate === false) {
-					$container.css({"height": blockHeight+"px"});
+					$container.css({"min-height": blockHeight+"px"});
 				} else {
-					$container.velocity("stop").velocity({"height": blockHeight+"px"}, {duration: duration });//, easing: "ease-in"});
+					$container.velocity("stop").velocity({"min-height": blockHeight+"px"}, {duration: duration });//, easing: "ease-in"});
 				}
 
 			} else if (currentHeight > blockHeight) {
 
 				if (animate === false) {
-					$container.css({"height": blockHeight+"px"});
+					$container.css({"min-height": blockHeight+"px"});
 				} else {
-					$container.velocity("stop").velocity({"height": blockHeight+"px"}, {duration: duration });//, easing: "ease-in"});
+					$container.velocity("stop").velocity({"min-height": blockHeight+"px"}, {duration: duration });//, easing: "ease-in"});
 				}
 
 			}
