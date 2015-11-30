@@ -214,9 +214,23 @@
 	}
 
 	.article-block-bottombar {
+		padding: (@item-padding/2);
+		text-align: center;
+		background-color: @primary-color;
 		&.display-none {
 			display: none;
 		}
+	}
+
+	.toolbar-progress {
+	    width: (@icon-size/2);
+	    height: (@icon-size/2);
+	    display: inline-block;
+	    background-color: @item-color;
+	    border-radius: 50%;
+	    &.selected {
+	        background-color: @item-color-selected;        
+	    }
 	}
 
 	&.display-none {

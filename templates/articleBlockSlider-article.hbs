@@ -57,7 +57,11 @@
 	         
 	    </div>
 	</div>
-	<div class="article-block-bottombar clearfix"></div>
+	<div class="article-block-bottombar clearfix">
+		{{#each _itemButtons}}
+	        <div class="toolbar-progress component-item-color component-item-border" data-block-slider="index" data-block-slider-index="{{this._index}}"></div>
+	    {{/each}}
+	</div>
 </div>
 
 {{#if _articleBackgroundBottom}}<div class="article-inner-bottom" style="background-image:url({{_articleBackgroundBottom.src}}); height:{{_articleBackgroundBottom.height}}px"></div>{{/if}}
