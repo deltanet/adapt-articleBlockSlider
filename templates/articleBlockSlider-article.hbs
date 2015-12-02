@@ -29,7 +29,7 @@
     </div>
     {{/if}}
     <div class="article-block-organise{{#if _articleBlockSlider._hasArrows}} has-arrows{{/if}}{{#if _articleBlockSlider._hasTabs}} has-tabs{{/if}}" role="region" {{#if _accessibility._ariaRegions.articleBlockSlider}}tabindex="0" aria-label="{{_accessibility._ariaRegions.articleBlockSlider}}"{{/if}}>
-	    <div class="article-block-slider clearfix" {{#if _articleBlockSlider.minHeight}}style="min-height: {{{_articleBlockSlider.minHeight}}}px"{{/if}}>
+	    <div class="article-block-slider clearfix" {{#if _articleBlockSlider._minHeight}}style="min-height: {{{_articleBlockSlider._minHeight}}}px"{{/if}}>
 	        <div class="block-container clearfix">
 
 	        </div>
@@ -52,12 +52,17 @@
 	                <a class="item-button {{_className}}" href="#" role="button" aria-label="{{_title}}" data-block-slider="index" data-block-slider-index="{{this._index}}"><span class="item-button-inner">{{_title}}</span></a>
 	            {{/each}}
 	            {{/if}}
-	            
+	            {{#if _articleBlockSlider._hasArrows}}
+	                <div class="article-block-bottombar">
+						{{#each _itemButtons}}
+					        <div class="toolbar-progress component-item-color component-item-border" data-block-slider="index" data-block-slider-index="{{this._index}}"></div>
+					    {{/each}}
+					</div>
+	            {{/if}}
 	        </div>
 	         
 	    </div>
 	</div>
-	<div class="article-block-bottombar clearfix"></div>
 </div>
 
 {{#if _articleBackgroundBottom}}<div class="article-inner-bottom" style="background-image:url({{_articleBackgroundBottom.src}}); height:{{_articleBackgroundBottom.height}}px"></div>{{/if}}

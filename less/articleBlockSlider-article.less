@@ -3,14 +3,12 @@
 		.article-inner { // Duplicated from Open Source .block-inner
 			margin: auto;
 			max-width: @device-width-large;
-			padding: @block-padding-top 0 @block-padding-bottom;
-			// reduce padding as screen width decreases
 			@media all and (max-width: (@device-width-large + 20px)) {
-				padding: (@block-padding-top / 2) 20px (@block-padding-bottom / 2);
-			}
-			@media all and (max-width: (@device-width-small + 20px)) {
-				padding: (@block-padding-top / 3) 10px (@block-padding-bottom / 3);
-			}
+	            padding: (@article-padding-top / 2) 0 (@article-padding-bottom / 2);
+	        }
+	        @media all and (max-width: (@device-width-small + 20px)) {
+	            padding: (@article-padding-top / 3) 0 (@article-padding-bottom / 3);
+	        }
 		}
 	}
 
@@ -18,6 +16,7 @@
 		margin: 0 auto;
 		position: relative;
 		width: 100%;
+		padding-bottom: 60px;
 	}
 
 	.article-block-slider {
@@ -36,7 +35,18 @@
 	}	
 
 	.article-block-toolbar {
-		width: 100%;
+		height: (@icon-size*2.5);
+		background-color: @primary-color;
+		margin-top: -120px;
+
+		@media all and (max-width: (@device-width-large + 20px)) {
+	        margin-left: 20px;
+	        margin-right: 20px;
+	    }
+	    @media all and (max-width: (@device-width-small + 20px)) {
+	        margin-left: 10px;
+	        margin-right: 10px;
+	    }
 	}
 
 	.item-button-container {
@@ -50,6 +60,7 @@
 
 	// Arrows General
 	.has-arrows {
+		/*
 		.block {
 			.block-inner {
 				// Added padding for arrow navigation
@@ -67,7 +78,6 @@
 					padding-right: 0;
 				}
 			}
-
 			// Removed last block inner padding to even the spacing up on smaller resolutions
 			@media all and (max-width: @device-width-medium) { 
 				&:last-child {
@@ -77,6 +87,7 @@
 				}
 			}
 		}
+		*/
 	}
 
 	// Arrow Buttons
@@ -84,10 +95,8 @@
 		background-color: @button-color;
 		display: block;
 		height: (@icon-size*2.5);
-		margin-top: -(@icon-size*1.25);
 		position: absolute;
 		text-decoration: none;
-		top: 50%;
 		width: (@icon-size*2.5);
 		z-index: 10;
 
@@ -116,11 +125,23 @@
 		}
 
 		&[data-block-slider='left'] {
-			left: 0;
+			left: 0px;
+			@media all and (max-width: (@device-width-large + 20px)) {
+	            left: 20px;
+	        }
+	        @media all and (max-width: (@device-width-small + 20px)) {
+	            left: 10px;
+	        }
 		}
 
 		&[data-block-slider='right'] {
-			right: 0;
+			right: 0px;
+			@media all and (max-width: (@device-width-large + 20px)) {
+	            right: 20px;
+	        }
+	        @media all and (max-width: (@device-width-small + 20px)) {
+	            right: 10px;
+	        }
 		}
 	}
 
@@ -200,9 +221,24 @@
 	}
 
 	.article-block-bottombar {
+		padding-top: 21px;
+		text-align: center;
 		&.display-none {
 			display: none;
 		}
+	}
+
+	.toolbar-progress {
+	    width: (@icon-size/2);
+	    height: (@icon-size/2);
+	    display: inline-block;
+	    background-color: @item-color;
+	    border-radius: 50%;
+	    margin-left: 2px;
+	    margin-right: 2px;
+	    &.selected {
+	        background-color: @item-color-selected;        
+	    }
 	}
 
 	&.display-none {
