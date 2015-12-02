@@ -41,9 +41,9 @@ The **Article Block Slider** and **Quicknav** extensions don't interact well tog
 Not yet authoring tool compatible.
 
 ----------------------------
-**Version number:**  2.0  
-**Framework versions:**  2.0  
-**Author / maintainer:** C&G Kineo  
+**Version number:**  2.0.1
+**Framework versions:**  2.0.4  
+**Author / maintainer:** C&G Kineo  / DeltaNet
 **Accessibility support:** WAI AA  
-**RTL support:** No  
+**RTL support:** Yes  
 **Cross-platform coverage:** To be confirmed  
