@@ -1,6 +1,6 @@
 .article-block-slider-enabled {
 	&.article {
-		.article-inner { // Duplicated from Open Source .block-inner
+		.article-inner { // Duplicated from theme .block-inner
 			margin: auto;
 			max-width: @device-width-large;
 			@media all and (max-width: (@device-width-large + 20px)) {
@@ -232,12 +232,12 @@
 	    width: (@icon-size/2);
 	    height: (@icon-size/2);
 	    display: inline-block;
-	    background-color: @item-color;
+	    background-color: @button-color-disabled;
 	    border-radius: 50%;
 	    margin-left: 2px;
 	    margin-right: 2px;
 	    &.selected {
-	        background-color: @item-color-selected;        
+	        background-color: @button-text-color;
 	    }
 	}
 
