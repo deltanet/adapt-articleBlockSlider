@@ -16,7 +16,6 @@
 		margin: 0 auto;
 		position: relative;
 		width: 100%;
-		padding-bottom: 60px;
 	}
 
 	.article-block-slider {
@@ -33,21 +32,6 @@
 	.block-container {
 		position: relative;
 	}	
-
-	.article-block-toolbar {
-		height: (@icon-size*2.5);
-		background-color: @primary-color;
-		margin-top: -120px;
-
-		@media all and (max-width: (@device-width-large + 20px)) {
-	        margin-left: 20px;
-	        margin-right: 20px;
-	    }
-	    @media all and (max-width: (@device-width-small + 20px)) {
-	        margin-left: 10px;
-	        margin-right: 10px;
-	    }
-	}
 
 	.item-button-container {
 		margin: 0 auto;
@@ -95,6 +79,7 @@
 		background-color: @button-color;
 		display: block;
 		height: (@icon-size*2.5);
+		margin-top: -(@icon-size*1.25);
 		position: absolute;
 		text-decoration: none;
 		width: (@icon-size*2.5);
@@ -125,23 +110,11 @@
 		}
 
 		&[data-block-slider='left'] {
-			left: 0px;
-			@media all and (max-width: (@device-width-large + 20px)) {
-	            left: 20px;
-	        }
-	        @media all and (max-width: (@device-width-small + 20px)) {
-	            left: 10px;
-	        }
+			left: 0;
 		}
 
 		&[data-block-slider='right'] {
-			right: 0px;
-			@media all and (max-width: (@device-width-large + 20px)) {
-	            right: 20px;
-	        }
-	        @media all and (max-width: (@device-width-small + 20px)) {
-	            right: 10px;
-	        }
+			right: 0;
 		}
 	}
 
@@ -221,8 +194,6 @@
 	}
 
 	.article-block-bottombar {
-		padding-top: 21px;
-		text-align: center;
 		&.display-none {
 			display: none;
 		}

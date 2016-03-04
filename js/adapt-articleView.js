@@ -382,6 +382,7 @@ define([
 			if (minHeight) {
 				$container.css({"min-height": minHeight+"px"});
 			}
+
 		},
 
 		_blockSliderResizeWidth: function() {
