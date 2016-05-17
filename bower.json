@@ -1,15 +1,10 @@
 {
     "name": "adapt-articleBlockSlider",
-<<<<<<< HEAD
     "version": "2.0.2",
     "framework": "^2.0.4",
-=======
-    "repository": "git://github.com/cgkineo/adapt-articleBlockSlider",
-    "framework": "^2.0.0",
-    "version": "2.0.0",
->>>>>>> refs/remotes/cgkineo/master
-    "homepage": "https://github.com/cgkineo/adapt-articleBlockSlider",
-    "issues": "https://github.com/cgkineo/adapt-articleBlockSlider/issues/",
+    "repository": "git://github.com/deltanet/adapt-articleBlockSlider",
+    "homepage": "https://github.com/deltanet/adapt-articleBlockSlider",
+    "issues": "https://github.com/deltanet/adapt-articleBlockSlider/issues/",
     "displayName": "Article Block Slider",
     "extension": "articleBlockSlider",
     "description": "A simple left and right slider for an article's blocks",

@@ -143,8 +143,6 @@ define([
         _blockSliderPostRender: function() {
             this._blockSliderConfigureControls(false);
 
-            
-
             if (this.model.get("_articleBlockSlider")._hasTabs) {
                 var parentHeight = this.$('.item-button').parent().height();
                 this.$('.item-button').css({
@@ -472,115 +470,6 @@ define([
         }
     };
 
-<<<<<<< HEAD
-			} else if (currentHeight > blockHeight) {
-
-				if (animate === false) {
-					$container.css({"height": blockHeight+"px"});
-				} else {
-					$container.velocity("stop").velocity({"height": blockHeight+"px"}, {duration: duration });//, easing: "ease-in"});
-				}
-
-			}
-
-			var minHeight = this.model.get("_articleBlockSlider")._minHeight;
-			if (minHeight) {
-				$container.css({"min-height": minHeight+"px"});
-			}
-
-		},
-
-		_blockSliderResizeWidth: function() {
-			var isEnabled = this._blockSliderIsEnabledOnScreenSizes();
-			var $blockContainer = this.$el.find(".block-container");
-			var $blocks = this.$el.find(".block");
-
-			if (!isEnabled) {
-				$blocks.css("width", "");
-				return $blockContainer.css({"width": "100%"});
-			}
-
-			var $container = this.$el.find(".article-block-slider");
-
-			$blocks.css("width", $container.width()+"px");
-				
-			var blockWidth = $($blocks[0]).outerWidth();
-			var totalWidth = $blocks.length * (blockWidth);
-
-			$blockContainer.width(totalWidth + "px");
-
-		},
-
-		_onBlockSliderDeviceChanged: function() {
-			var isEnabled = this._blockSliderIsEnabledOnScreenSizes();
-
-			if (isEnabled) {
-				this.$(".article-block-toolbar, .article-block-bottombar").removeClass("display-none")
-			} else {
-				this.$(".article-block-toolbar, .article-block-bottombar").addClass("display-none");
-			}
-
-			_.delay(function() {
-				$(window).resize();
-			}, 250);
-		},
-
-		_onBlockSliderPageScrollTo: function(selector) {
-			this._disableAnimationOnce = true;
-			_.defer(_.bind(function() {
-				this._disableAnimationOnce = false;
-			}, this));
-
-			if (typeof selector === "object") selector = selector.selector;
-
-			var isEnabled = this._blockSliderIsEnabledOnScreenSizes();
-			if (!isEnabled) {
-				return;
-			}
-
-			if (this.$el.find(selector).length == 0) return;
-			
-			var id = selector.substr(1);
-
-			var model = Adapt.findById(id);
-			if (!model) return;
-
-			var block;
-			if (model.get("_type") == "block") block = model;
-			else block = model.findAncestor("blocks");
-			if (!block) return;
-
-			var children = this.model.getChildren();
-			for (var i = 0, item; item = children.models[i++];) {
-				if (item.get("_id") == block.get("_id")) {
-					_.defer(_.bind(function() {
-						this._blockSliderMoveIndex(i-1, false);
-					}, this));
-					return;
-				}
-			}
-
-		},
-
-		_onBlockSliderPageScrolledTo: function() {
-			_.defer(_.bind(function() {
-				this._blockSliderScrollToCurrent(false);
-			}, this));
-		},
-
-		_onBlockSliderRemove: function() {
-			this._blockSliderRemoveEventListeners();
-		},
-
-		_blockSliderRemoveEventListeners: function() {
-			this.$(".component").off("resize", this._blockSliderResizeHeight);
-			this.stopListening(Adapt, "device:changed", this._onBlockSliderDeviceChanged);
-		}
-	};
-
-	return BlockSliderView;
-=======
     return BlockSliderView;
->>>>>>> refs/remotes/cgkineo/master
 
 });
