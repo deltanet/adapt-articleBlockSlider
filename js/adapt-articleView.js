@@ -74,6 +74,18 @@ define([
         },
 
         _blockSliderConfigureVariables: function() {
+            
+            this.model.set('_marginDir', 'left');
+            if (Adapt.config.get('_defaultDirection') == 'rtl') {
+                this.model.set('_marginDir', 'right');
+            }
+
+            var slideWidth = this.$('.block-container').width();
+            var stage = this.model.get('_stage');
+            var margin = -(stage * slideWidth);
+
+            this.$('.block-container').css(('margin-' + this.model.get('_marginDir')), margin);
+
             var blocks = this.model.getChildren().models;
             var totalBlocks = blocks.length;
 
@@ -263,17 +275,20 @@ define([
             if (this._disableAnimationOnce) animate = false;
             if (this._disableAnimations) animate = false;
             
+            var movementSize = this.$('.article-block-slider').width();
+            var marginDir = {};
+            
             if (animate === false) {
                 _.defer(_.bind(function(){
-                    $container.scrollLeft(totalLeft );
-                    this._blockSliderHideOthers();
+                    marginDir['margin-' + this.model.get('_marginDir')] = -(movementSize * currentBlock);
+                    this.$('.block-container').css(marginDir);
                 }, this));
             } else {
-                $container.stop(true).animate({scrollLeft:totalLeft}, duration, _.bind(function() {
-                    $container.scrollLeft(totalLeft );
-                    this._blockSliderHideOthers();
-                }, this));
+                marginDir['margin-' + this.model.get('_marginDir')] = -(movementSize * currentBlock);
+                this.$('.block-container').velocity("stop", true).velocity(marginDir);
             }
+
+            this._blockSliderHideOthers();
 
         },
 

@@ -1,16 +1,4 @@
 .article-block-slider-enabled {
-	&.article {
-		.article-inner { // Duplicated from theme .block-inner
-			margin: auto;
-			max-width: @device-width-large;
-			@media all and (max-width: (@device-width-large + 20px)) {
-	            padding: (@article-padding-top / 2) 0 (@article-padding-bottom / 2);
-	        }
-	        @media all and (max-width: (@device-width-small + 20px)) {
-	            padding: (@article-padding-top / 3) 0 (@article-padding-bottom / 3);
-	        }
-		}
-	}
 
 	.article-block-organise {
 		margin: 0 auto;
@@ -25,8 +13,11 @@
 	}
 
 	.block {
-		float: left;
 		width: 100%;
+		float: left;
+        .dir-rtl & {
+            float: right;
+        }
 	}
 
 	.block-container {
@@ -44,7 +35,6 @@
 
 	// Arrows General
 	.has-arrows {
-		/*
 		.block {
 			.block-inner {
 				// Added padding for arrow navigation
@@ -71,7 +61,6 @@
 				}
 			}
 		}
-		*/
 	}
 
 	// Arrow Buttons
@@ -111,10 +100,18 @@
 
 		&[data-block-slider='left'] {
 			left: 0;
+			.dir-rtl & {
+	            left: inherit;
+	            right: 0;
+	        }
 		}
 
 		&[data-block-slider='right'] {
 			right: 0;
+			.dir-rtl & {
+	            right: inherit;
+	            left: 0;
+	        }
 		}
 	}
 
@@ -194,6 +191,8 @@
 	}
 
 	.article-block-bottombar {
+		padding-top: 21px;
+		text-align: center;
 		&.display-none {
 			display: none;
 		}
@@ -208,7 +207,7 @@
 	    margin-left: 2px;
 	    margin-right: 2px;
 	    &.selected {
-	        background-color: @button-text-color;
+	        background-color: @button-color;
 	    }
 	}
 
