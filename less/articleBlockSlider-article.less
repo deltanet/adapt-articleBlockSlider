@@ -1,4 +1,18 @@
 .article-block-slider-enabled {
+	&.article {
+		.article-inner {
+			margin: auto;
+			max-width: @device-width-large;
+			//padding: @block-padding-top 0 @block-padding-bottom;
+			// reduce padding as screen width decreases
+			@media all and (max-width: (@device-width-large + 20px)) {
+				//padding: (@block-padding-top / 2) 20px (@block-padding-bottom / 2);
+			}
+			@media all and (max-width: (@device-width-small + 20px)) {
+				//padding: (@block-padding-top / 3) 10px (@block-padding-bottom / 3);
+			}
+		}
+	}
 
 	.article-block-organise {
 		margin: 0 auto;
@@ -22,7 +36,31 @@
 
 	.block-container {
 		position: relative;
-	}	
+	}
+
+	.article-block-toolbar {
+		width: 100%;
+
+		&.top {
+			.item-button-arrow {
+				top: 0px;
+				margin-top: 0px;
+			}
+		}
+
+		&.bottom {
+			.item-button-arrow {
+				margin-top: 0px;
+			}
+		}
+
+		&.none {
+			.item-button-arrow {
+				top: 50%;
+				margin-top: -(@icon-size*1.25);
+			}
+		}
+	}
 
 	.item-button-container {
 		margin: 0 auto;
@@ -31,6 +69,10 @@
 		@media all and (max-width (@device-width-large + 20px)) {
 			max-width: @device-width-medium;
 		}
+	}
+
+	.trickle-button-component {
+		padding-bottom: 0px;
 	}
 
 	// Arrows General
@@ -46,11 +88,6 @@
 					padding: @block-padding-top 70px 0;
 				}
 
-				// Removed arrow navigation padding
-				@media all and (max-width: @device-width-medium) { 
-					padding-left: 0;
-					padding-right: 0;
-				}
 			}
 			// Removed last block inner padding to even the spacing up on smaller resolutions
 			@media all and (max-width: @device-width-medium) { 
@@ -190,8 +227,13 @@
 		padding: 10px;
 	}
 
-	.article-block-bottombar {
-		padding-top: 21px;
+	.article-block-progressbar {
+		background-color: @text-background-color;
+		.no-opacity & {
+	        background-color: @text-background-color-fallback;
+	    }
+	    height: (@icon-size*2.5);
+		max-width: @max-width;
 		text-align: center;
 		&.display-none {
 			display: none;
@@ -204,6 +246,7 @@
 	    display: inline-block;
 	    background-color: @button-color-disabled;
 	    border-radius: 50%;
+	    margin-top: @icon-size;
 	    margin-left: 2px;
 	    margin-right: 2px;
 	    &.selected {
@@ -214,4 +257,49 @@
 	&.display-none {
 		display: none;
 	}
+	
+	///// Full width /////
+	&.fullwidth {
+		&.article {
+			.article-inner {
+				max-width: @max-width;
+				padding: 0px;
+			}
+		}
+		.item-button-arrow {
+			top: 50% !important;
+			margin-top: -(@icon-size*1.25) !important;
+		}
+		.article-block-slider {
+			max-width: @max-width;
+		}
+		.has-arrows {
+			.block {
+				.block-inner {
+					// Added padding for arrow navigation
+					@media all and (min-width: @device-width-medium) { 
+						padding: @block-padding-top 70px @block-padding-bottom;
+					}
+
+					.ie8 & {
+						padding: @block-padding-top 70px @block-padding-bottom;
+					}
+
+					@media all and (max-width: @device-width-medium) {
+						padding-left: 10px;
+						padding-right: 10px;
+					}
+				}
+				// Removed last block inner padding to even the spacing up on smaller resolutions
+				@media all and (max-width: @device-width-medium) { 
+					&:last-child {
+						.block-inner {
+							padding-bottom: 0px;
+						}
+					}
+				}
+			}
+		}
+	}
+
 }

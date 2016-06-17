@@ -68,6 +68,28 @@ define([
 
             this.$el.addClass('article-block-slider-enabled');
 
+            var progressLoc = this.model.get('_articleBlockSlider')._progressLocation;
+
+            if(progressLoc == 'top') {
+                this.$('.article-block-progressBottom').remove();
+                this.$('.article-block-toolbar').addClass('top');
+            }
+
+            if(progressLoc == 'bottom') {
+                this.$('.article-block-progressTop').remove();
+                this.$('.article-block-toolbar').addClass('bottom');
+            }
+
+            if(progressLoc == 'none') {
+                this.$('.article-block-progressTop').remove();
+                this.$('.article-block-progressBottom').remove();
+                this.$('.article-block-toolbar').addClass('none');
+            }
+
+            if(this.model.get('_articleBlockSlider')._fullWidth) {
+                this.$el.addClass('fullwidth');
+            }
+
             this.delegateEvents();
 
             return this;
@@ -344,6 +366,8 @@ define([
             var $container = this.$el.find(".article-block-slider");
             var isEnabled = this._blockSliderIsEnabledOnScreenSizes();
 
+            var minHeight = this.model.get("_articleBlockSlider")._minHeight;
+
             if (!isEnabled) {
                 this._blockSliderShowAll();
                 return $container.velocity("stop").css({"height": "", "min-height": ""});
@@ -351,6 +375,11 @@ define([
 
             var currentBlock = this.model.get("_currentBlock");
             var $blocks = this.$el.find(".block");
+            var $blockInners = this.$el.find(".block-inner");
+
+            if (minHeight) {
+                $blockInners.css({"min-height": minHeight+"px"});
+            }
 
             var currentHeight = $container.height();
             var blockHeight = $blocks.eq(currentBlock).height();
@@ -391,7 +420,6 @@ define([
 
             }
 
-            var minHeight = this.model.get("_articleBlockSlider")._minHeight;
             if (minHeight) {
                 $container.css({"min-height": minHeight+"px"});
             }
@@ -422,9 +450,10 @@ define([
             var isEnabled = this._blockSliderIsEnabledOnScreenSizes();
 
             if (isEnabled) {
-                this.$(".article-block-toolbar, .article-block-bottombar").removeClass("display-none")
+                this.$(".article-block-toolbar, .article-block-bottombar, .article-block-progressbar").removeClass("display-none");
             } else {
-                this.$(".article-block-toolbar, .article-block-bottombar").addClass("display-none");
+                this.$(".article-block-toolbar, .article-block-bottombar, .article-block-progressbar").addClass("display-none");
+                this.$('.block-inner').css("min-height","10px");
             }
 
             _.delay(function() {
