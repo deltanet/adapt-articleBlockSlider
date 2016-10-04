@@ -31,7 +31,7 @@ define([
 
             this.listenTo(Adapt, "device:resize", this._onBlockSliderResize);
             this.listenTo(Adapt, "device:changed", this._onBlockSliderDeviceChanged);
-            
+
             this.listenToOnce(Adapt, "remove", this._onBlockSliderRemove);
             this.listenToOnce(this.model, "change:_isReady", this._onBlockSliderReady);
 
@@ -47,12 +47,12 @@ define([
                 this._blockSliderRender();
 
             } else AdaptArticleView.prototype.render.call(this);
-        
+
         },
 
         _blockSliderRender: function() {
             Adapt.trigger(this.constructor.type + 'View:preRender', this);
-          
+
             this._blockSliderConfigureVariables();
 
             var data = this.model.toJSON();
@@ -68,12 +68,46 @@ define([
 
             this.$el.addClass('article-block-slider-enabled');
 
+            var progressLoc = this.model.get('_articleBlockSlider')._progressLocation;
+
+            if(progressLoc == 'top') {
+                this.$('.article-block-progressBottom').remove();
+                this.$('.article-block-toolbar').addClass('top');
+            }
+
+            if(progressLoc == 'bottom') {
+                this.$('.article-block-progressTop').remove();
+                this.$('.article-block-toolbar').addClass('bottom');
+            }
+
+            if(progressLoc == 'none') {
+                this.$('.article-block-progressTop').remove();
+                this.$('.article-block-progressBottom').remove();
+                this.$('.article-block-toolbar').addClass('none');
+            }
+
+            if(this.model.get('_articleBlockSlider')._fullWidth) {
+                this.$el.addClass('fullwidth');
+            }
+
             this.delegateEvents();
 
             return this;
         },
 
         _blockSliderConfigureVariables: function() {
+
+            this.model.set('_marginDir', 'left');
+            if (Adapt.config.get('_defaultDirection') == 'rtl') {
+                this.model.set('_marginDir', 'right');
+            }
+
+            var slideWidth = this.$('.block-container').width();
+            var stage = this.model.get('_stage');
+            var margin = -(stage * slideWidth);
+
+            this.$('.block-container').css(('margin-' + this.model.get('_marginDir')), margin);
+
             var blocks = this.model.getChildren().models;
             var totalBlocks = blocks.length;
 
@@ -125,7 +159,7 @@ define([
             var $blocks = this.$el.find(".block");
 
             $blocks.a11y_on(false).eq(_currentBlock).a11y_on(true);
-            
+
             _.delay(_.bind(function() {
                 if ($blocks.eq(_currentBlock).onscreen().onscreen) $blocks.eq(_currentBlock).a11y_focus();
             }, this), duration);
@@ -142,8 +176,6 @@ define([
 
         _blockSliderPostRender: function() {
             this._blockSliderConfigureControls(false);
-
-            
 
             if (this.model.get("_articleBlockSlider")._hasTabs) {
                 var parentHeight = this.$('.item-button').parent().height();
@@ -171,7 +203,7 @@ define([
             this._blockSliderMoveIndex(startIndex, false);
 
             Adapt.trigger(this.constructor.type + 'View:postRender', this);
-            
+
         },
 
         _onBlockSliderReady: function() {
@@ -264,18 +296,21 @@ define([
 
             if (this._disableAnimationOnce) animate = false;
             if (this._disableAnimations) animate = false;
-            
+
+            var movementSize = this.$('.article-block-slider').width();
+            var marginDir = {};
+
             if (animate === false) {
                 _.defer(_.bind(function(){
-                    $container.scrollLeft(totalLeft );
-                    this._blockSliderHideOthers();
+                    marginDir['margin-' + this.model.get('_marginDir')] = -(movementSize * currentBlock);
+                    this.$('.block-container').css(marginDir);
                 }, this));
             } else {
-                $container.stop(true).animate({scrollLeft:totalLeft}, duration, _.bind(function() {
-                    $container.scrollLeft(totalLeft );
-                    this._blockSliderHideOthers();
-                }, this));
+                marginDir['margin-' + this.model.get('_marginDir')] = -(movementSize * currentBlock);
+                this.$('.block-container').velocity("stop", true).velocity(marginDir);
             }
+
+            this._blockSliderHideOthers();
 
         },
 
@@ -297,7 +332,7 @@ define([
                 this._blockSliderSetVisible(blocks[i], true);
             }
         },
-        
+
         _blockSliderHideOthers: function() {
             var blocks = this.model.getChildren().models;
             var currentIndex = this.model.get("_currentBlock");
@@ -320,7 +355,7 @@ define([
         },
 
         _onBlockSliderResize: function() {
-            
+
             this._blockSliderResizeWidth(false);
             this._blockSliderResizeHeight(false);
             this._blockSliderScrollToCurrent(false);
@@ -331,6 +366,8 @@ define([
             var $container = this.$el.find(".article-block-slider");
             var isEnabled = this._blockSliderIsEnabledOnScreenSizes();
 
+            var minHeight = this.model.get("_articleBlockSlider")._minHeight;
+
             if (!isEnabled) {
                 this._blockSliderShowAll();
                 return $container.velocity("stop").css({"height": "", "min-height": ""});
@@ -338,13 +375,18 @@ define([
 
             var currentBlock = this.model.get("_currentBlock");
             var $blocks = this.$el.find(".block");
+            var $blockInners = this.$el.find(".block-inner");
+
+            if (minHeight) {
+                $blockInners.css({"min-height": minHeight+"px"});
+            }
 
             var currentHeight = $container.height();
             var blockHeight = $blocks.eq(currentBlock).height();
 
             var maxHeight = -1;
-            $container.find(".block").each(function() { 
-            
+            $container.find(".block").each(function() {
+
             if ($(this).height() > maxHeight)
                 maxHeight = $(this).height();
             });
@@ -378,7 +420,6 @@ define([
 
             }
 
-            var minHeight = this.model.get("_articleBlockSlider")._minHeight;
             if (minHeight) {
                 $container.css({"min-height": minHeight+"px"});
             }
@@ -391,13 +432,14 @@ define([
 
             if (!isEnabled) {
                 $blocks.css("width", "");
+                $blockContainer.css(('margin-' + this.model.get('_marginDir')), "0px");
                 return $blockContainer.css({"width": "100%"});
             }
 
             var $container = this.$el.find(".article-block-slider");
 
             $blocks.css("width", $container.width()+"px");
-                
+
             var blockWidth = $($blocks[0]).outerWidth();
             var totalWidth = $blocks.length * (blockWidth);
 
@@ -409,9 +451,11 @@ define([
             var isEnabled = this._blockSliderIsEnabledOnScreenSizes();
 
             if (isEnabled) {
-                this.$(".article-block-toolbar, .article-block-bottombar").removeClass("display-none")
+                this.$(".article-block-toolbar, .article-block-bottombar, .article-block-progressbar").removeClass("display-none");
             } else {
-                this.$(".article-block-toolbar, .article-block-bottombar").addClass("display-none");
+                this.$(".article-block-toolbar, .article-block-bottombar, .article-block-progressbar").addClass("display-none");
+                this.$('.block-inner').css("min-height","10px");
+                this.$('.block-container').css(('margin-' + this.model.get('_marginDir')), "0px");
             }
 
             _.delay(function() {
@@ -433,7 +477,7 @@ define([
             }
 
             if (this.$el.find(selector).length == 0) return;
-            
+
             var id = selector.substr(1);
 
             var model = Adapt.findById(id);
