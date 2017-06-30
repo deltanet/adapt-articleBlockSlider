@@ -7,16 +7,16 @@ define([
 	'libraries/jquery.resize'
 ], function(Adapt, ArticleView, ArticleModel, ArticleViewExtension, ArticleModelExtension) {
 
-	/*	
+	/*
 		Here we are extending the articleView and articleModel in Adapt.
 		This is to accomodate the block slider functionality on the article.
 		The advantage of this method is that the block slider behaviour can utilize all of the predefined article behaviour in both the view and the model.
-	*/	
+	*/
 
 	//Extends core/js/views/articleView.js
 	var ArticleViewInitialize = ArticleView.prototype.initialize;
 	ArticleView.prototype.initialize = function(options) {
-		if (this.model.get("_articleBlockSlider")) {
+		if (this.model.get("_articleBlockSlider") && this.model.get("_articleBlockSlider")._isEnabled) {
 			//extend the articleView with new functionality
 			_.extend(this, ArticleViewExtension);
 		}
@@ -27,7 +27,7 @@ define([
 	//Extends core/js/models/articleModel.js
 	var ArticleModelInitialize = ArticleModel.prototype.initialize;
 	ArticleModel.prototype.initialize = function(options) {
-		if (this.get("_articleBlockSlider")) {
+		if (this.get("_articleBlockSlider") && this.get("_articleBlockSlider")._isEnabled) {
 			//extend the articleModel with new functionality
 			_.extend(this, ArticleModelExtension);
 

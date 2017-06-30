@@ -9,5 +9,7 @@
     "_hasArrows": true,
     "_startIndex": 0,
     "_hasUniformHeight": true,
-    "_minHeight": null
+    "_minHeight": null,
+    "_fullWidth": true,
+    "_progressLocation": "top" // top - bottom - none
 }

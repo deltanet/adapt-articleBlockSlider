@@ -24,9 +24,9 @@ The attributes listed below are used in *articles.json* to configure **Article B
 
 >**_isEnabledOnScreenSizes** (string): Defines which screen sizes the Article Block Slider displays the navigation elements on. Acceptable values are `"large"`, `"medium"` and `"small"` or combinations thereof as a space-separated list e.g. `"large medium"`.
 
->**_hasTabs** (boolean): Turns the tab navigation on and off. If `_hasTabs` is set to true, you must set `_hasArrows` to false. Acceptable values are `true` and `false`. 
+>**_hasTabs** (boolean): Turns the tab navigation on and off. If `_hasTabs` is set to true, you must set `_hasArrows` to false. Acceptable values are `true` and `false`.
 
->**_hasArrows** (boolean): Turns the arrow navigation on and off. If `_hasArrows` is set to true, you must set `_hasTabs` to false. Acceptable values are `true` and `false`. 
+>**_hasArrows** (boolean): Turns the arrow navigation on and off. If `_hasArrows` is set to true, you must set `_hasTabs` to false. Acceptable values are `true` and `false`.
 
 >**_startIndex** (number): Sets which block displays on page load.
 
@@ -35,15 +35,15 @@ The attributes listed below are used in *articles.json* to configure **Article B
 >**_minHeight** (number): Sets a minimum height on the `.article-block-slider` container class.
 
 ## Limitations
- 
+
 Only one navigation element (Arrows or Tabs) should be active at any one time.  
 
 The **Article Block Slider** and **Quicknav** extensions don't interact well together when the **Article Block Slider** is the last article on a page with an enabled **Quicknav.**  
 
 ----------------------------
-**Version number:**  2.0  
-**Framework versions:**  2.0  
-**Author / maintainer:** C&G Kineo  
+**Version number:**  2.0.9
+**Framework versions:**  2.0.4  
+**Author / maintainer:** C&G Kineo  / DeltaNet
 **Accessibility support:** WAI AA  
-**RTL support:** No  
+**RTL support:** Yes  
 **Cross-platform coverage:** To be confirmed  

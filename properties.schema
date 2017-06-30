@@ -62,7 +62,7 @@
                 "_hasTabs": {
                   "type":"boolean",
                   "required":true,
-                  "default": "false",
+                  "default": false,
                   "title": "Has Tabs",
                   "inputType": "Checkbox",
                   "validators": [],
@@ -71,7 +71,7 @@
                 "_hasArrows": {
                   "type":"boolean",
                   "required":true,
-                  "default": "true",
+                  "default": true,
                   "title": "Has Arrows",
                   "inputType": "Checkbox",
                   "validators": [],
@@ -89,7 +89,7 @@
                 "_hasUniformHeight": {
                   "type":"boolean",
                   "required":true,
-                  "default": "true",
+                  "default": true,
                   "title": "Has a uniform height",
                   "inputType": "Checkbox",
                   "validators": [],
@@ -103,6 +103,24 @@
                   "inputType": "Number",
                   "validators": ["number"],
                   "help": "Sets a minimum height on the .article-block-slider container class."
+                },
+                "_fullWidth": {
+                  "type":"boolean",
+                  "required":true,
+                  "default": true,
+                  "title": "Full Width Layout",
+                  "inputType": { "type": "Boolean", "options": [false, true]},
+                  "validators": [],
+                  "help": "Sets whether the layout is full width. Acceptable values are true and false."
+                },
+                "_progressLocation": {
+                  "type": "string",
+                  "required": true,
+                  "default": "top",
+                  "title": "Progress Location",
+                  "inputType": "Text",
+                  "validators": [],
+                  "help": "Defines the location of the progress bar. Acceptable values are top, bottom and none."
                 }
               }
             }
