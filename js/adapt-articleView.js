@@ -1,7 +1,21 @@
 define([
-    'coreJS/adapt',
-    'coreViews/articleView'
+    'core/js/adapt',
+    'core/js/views/articleView'
 ], function(Adapt, AdaptArticleView) {
+
+    function debounce(callback, timeout) {
+
+        var handle = null;
+        var debounced = function debounced() {
+            clearTimeout(handle);
+            handle = setTimeout(callback, timeout);
+        };
+        debounced.cancel = function cancelDebounce() {
+            clearTimeout(handle);
+        };
+        return debounced;
+
+    }
 
     var BlockSliderView = {
 
@@ -38,6 +52,10 @@ define([
             this.listenTo(Adapt, "page:scrollTo", this._onBlockSliderPageScrollTo);
             this.listenTo(Adapt, "page:scrolledTo", this._onBlockSliderPageScrolledTo);
 
+            var duration = this.model.get("_articleBlockSlider")._slideAnimationDuration || 200;
+
+            this._blockSliderHideOthers = debounce(_.bind(this._blockSliderHideOthers, this), duration);
+
         },
 
         render: function() {
@@ -60,11 +78,6 @@ define([
             this.$el.html(template(data));
 
             this.addChildren();
-
-            _.defer(_.bind(function() {
-                this._blockSliderPostRender();
-
-            }, this));
 
             this.$el.addClass('article-block-slider-enabled');
 
@@ -91,6 +104,10 @@ define([
             }
 
             this.delegateEvents();
+
+            this.$el.imageready(_.bind(function() {
+                _.delay(_.bind(this._blockSliderPostRender, this), 500);
+            }, this));
 
             return this;
         },
@@ -157,6 +174,7 @@ define([
             $indexes.eq(_currentBlock).a11y_cntrl_enabled(false).addClass("selected visited");
 
             var $blocks = this.$el.find(".block");
+            if (!$blocks.length) return;
 
             $blocks.a11y_on(false).eq(_currentBlock).a11y_on(true);
 
@@ -210,6 +228,7 @@ define([
             this._blockSliderHideOthers();
             _.delay(_.bind(function(){
                 this._blockSliderConfigureControls(false);
+                this._onBlockSliderResize();
             },this),250);
             this.$(".component").on("resize", this._blockSliderResizeHeight);
         },
@@ -325,6 +344,9 @@ define([
         },
 
         _blockSliderShowAll: function() {
+
+            this._blockSliderHideOthers.cancel();
+
             var blocks = this.model.getChildren().models;
             var currentIndex = this.model.get("_currentBlock");
 
