@@ -1,4 +1,9 @@
 .article-block-slider-enabled {
+
+	.element-hidden {
+		visibility: hidden;
+	}
+
 	&.article {
 		.article-inner {
 			margin: auto;
@@ -80,8 +85,8 @@
 		.block {
 			.block-inner {
 				// Added padding for arrow navigation
-				@media all and (min-width: @device-width-medium) { 
-					padding: @block-padding-top 70px 0; 
+				@media all and (min-width: @device-width-medium) {
+					padding: @block-padding-top 70px 0;
 				}
 
 				.ie8 & {
@@ -90,7 +95,7 @@
 
 			}
 			// Removed last block inner padding to even the spacing up on smaller resolutions
-			@media all and (max-width: @device-width-medium) { 
+			@media all and (max-width: @device-width-medium) {
 				&:last-child {
 					.block-inner {
 						padding-bottom: 0;
@@ -175,7 +180,7 @@
 					padding: 0 5px;
 				}
 
-				// Removed padding 
+				// Removed padding
 				@media all and (max-width: @device-width-medium) {
 					padding-left: 0;
 					padding-right: 0;
@@ -254,7 +259,7 @@
 	&.display-none {
 		display: none;
 	}
-	
+
 	///// Full width /////
 	&.fullwidth {
 		&.article {
@@ -274,7 +279,7 @@
 			.block {
 				.block-inner {
 					// Added padding for arrow navigation
-					@media all and (min-width: @device-width-medium) { 
+					@media all and (min-width: @device-width-medium) {
 						padding: @block-padding-top 70px @block-padding-bottom;
 					}
 
@@ -288,7 +293,7 @@
 					}
 				}
 				// Removed last block inner padding to even the spacing up on smaller resolutions
-				@media all and (max-width: @device-width-medium) { 
+				@media all and (max-width: @device-width-medium) {
 					&:last-child {
 						.block-inner {
 							padding-bottom: 0px;

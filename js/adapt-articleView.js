@@ -373,7 +373,11 @@ define([
         _blockSliderSetVisible: function(model, value) {
             var id = model.get("_id");
 
-            this.$el.find("."+id + " *").css("visibility", value ? "" : "hidden");
+            if(value) {
+              this.$el.find("."+id + " *").removeClass('element-hidden');
+            } else {
+              this.$el.find("."+id + " *").addClass('element-hidden');
+            }
 
         },
 
