@@ -137,7 +137,7 @@ define([
                 itemButtons.push({
                     _className: (i === 0 ? "home" : "not-home") + (" i"+i),
                     _index: i,
-                    _includeNumber: i != 0,
+                    _includeNumber: i !== 0,
                     _title: blocks[i].get('title')
                 });
             }
@@ -178,10 +178,11 @@ define([
 
             $blocks.a11y_on(false).eq(_currentBlock).a11y_on(true);
 
-            _.delay(_.bind(function() {
-                if ($blocks.eq(_currentBlock).onscreen().onscreen) $blocks.eq(_currentBlock).a11y_focus();
-            }, this), duration);
-
+            if(Adapt.accessibility.isActive()) {// prevents https://github.com/cgkineo/adapt-articleBlockSlider/issues/28
+                _.delay(_.bind(function() {
+                    if ($blocks.eq(_currentBlock).onscreen().onscreen) $blocks.eq(_currentBlock).a11y_focus();
+                }, this), duration);
+            }
         },
 
         _blockSliderSetButtonLayout: function() {
@@ -257,16 +258,17 @@ define([
             if (this.model.get("_currentBlock") === 0) return;
 
             var index = this.model.get("_currentBlock");
-            index--;
-            this._blockSliderMoveIndex(index);
+            this._blockSliderMoveIndex(--index);
         },
 
         _blockSliderMoveIndex: function(index, animate) {
             if (this.model.get("_currentBlock") != index) {
 
                 this.model.set("_currentBlock", index);
-                this._blockSliderSetVisible(this.model.getChildren().models[index], true);
 
+                Adapt.trigger('media:stop');//in case any of the blocks contain media that's been left playing by the user
+
+                this._blockSliderSetVisible(this.model.getChildren().models[index], true);
                 this._blockSliderResizeHeight(animate);
                 this._blockSliderScrollToCurrent(animate);
                 this._blockSliderConfigureControls(animate);
@@ -290,8 +292,7 @@ define([
             if (this.model.get("_currentBlock") == this.model.get("_totalBlocks") - 1 ) return;
 
             var index = this.model.get("_currentBlock");
-            index++;
-            this._blockSliderMoveIndex(index);
+            this._blockSliderMoveIndex(++index);
         },
 
         _blockSliderScrollToCurrent: function(animate) {
@@ -310,7 +311,7 @@ define([
 
             var duration = this.model.get("_articleBlockSlider")._slideAnimationDuration || 200;
 
-            var currentBlock = this.model.get("_currentBlock")
+            var currentBlock = this.model.get("_currentBlock");
             var $currentBlock = $(blocks[currentBlock]);
 
             if (this._disableAnimationOnce) animate = false;
@@ -498,7 +499,7 @@ define([
                 return;
             }
 
-            if (this.$el.find(selector).length == 0) return;
+            if (this.$el.find(selector).length === 0) return;
 
             var id = selector.substr(1);
 
@@ -519,7 +520,6 @@ define([
                     return;
                 }
             }
-
         },
 
         _onBlockSliderPageScrolledTo: function() {
