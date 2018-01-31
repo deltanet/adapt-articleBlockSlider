@@ -140,9 +140,22 @@ define([
                     _includeNumber: i !== 0,
                     _title: blocks[i].get('title')
                 });
+                this.listenTo(blocks[i], "change:_isComplete", this._onBlockComplete);
             }
 
             this.model.set("_itemButtons", itemButtons);
+        },
+
+        _onBlockComplete: function() {
+          var _currentBlock = this.model.get("_currentBlock");
+          var _totalBlocks = this.model.get("_totalBlocks");
+          var $right = this.$el.find("[data-block-slider='right']");
+          var blocks = this.model.getChildren().models;
+
+          if(blocks[_currentBlock].get('_isComplete') == true && (_currentBlock < (_totalBlocks - 1))) {
+            $right.a11y_cntrl_enabled(true);
+          }
+
         },
 
         _blockSliderConfigureControls: function(animate) {
@@ -167,6 +180,17 @@ define([
             } else {
                 $left.a11y_cntrl_enabled(true);
                 $right.a11y_cntrl_enabled(true);
+            }
+
+            if(_currentBlock < (_totalBlocks - 1)) {
+              // Reset
+              $right.a11y_cntrl_enabled(true);
+
+              var blocks = this.model.getChildren().models;
+
+              if(blocks[_currentBlock].get('_isComplete') == false) {
+                $right.a11y_cntrl_enabled(false);
+              }
             }
 
             var $indexes = this.$el.find("[data-block-slider='index']");
