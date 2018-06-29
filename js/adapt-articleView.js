@@ -50,7 +50,6 @@ define([
             this.listenToOnce(this.model, "change:_isReady", this._onBlockSliderReady);
 
             this.listenTo(Adapt, "page:scrollTo", this._onBlockSliderPageScrollTo);
-            this.listenTo(Adapt, "page:scrolledTo", this._onBlockSliderPageScrolledTo);
 
             var duration = this.model.get("_articleBlockSlider")._slideAnimationDuration || 200;
 
@@ -549,12 +548,6 @@ define([
                     return;
                 }
             }
-        },
-
-        _onBlockSliderPageScrolledTo: function() {
-            _.defer(_.bind(function() {
-                this._blockSliderScrollToCurrent(false);
-            }, this));
         },
 
         _onBlockSliderRemove: function() {
