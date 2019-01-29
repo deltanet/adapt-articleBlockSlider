@@ -54,17 +54,14 @@ define([
             var duration = this.model.get("_articleBlockSlider")._slideAnimationDuration || 200;
 
             this._blockSliderHideOthers = debounce(_.bind(this._blockSliderHideOthers, this), duration);
-
         },
 
         render: function() {
-
             if (this.model.isBlockSliderEnabled()) {
 
                 this._blockSliderRender();
 
             } else AdaptArticleView.prototype.render.call(this);
-
         },
 
         _blockSliderRender: function() {
@@ -402,15 +399,14 @@ define([
             } else {
               this.$el.find("."+id + " *").addClass('element-hidden');
             }
-
         },
 
         _onBlockSliderResize: function() {
-
             this._blockSliderResizeWidth(false);
             this._blockSliderResizeHeight(false);
             this._blockSliderScrollToCurrent(false);
 
+            Adapt.trigger('blockslider:resize');
         },
 
         _blockSliderResizeHeight: function(animate) {
@@ -495,7 +491,6 @@ define([
             var totalWidth = $blocks.length * (blockWidth);
 
             $blockContainer.width(totalWidth + "px");
-
         },
 
         _onBlockSliderDeviceChanged: function() {
