@@ -167,6 +167,11 @@ define([
             var $left = this.$el.find("[data-block-slider='left']");
             var $right = this.$el.find("[data-block-slider='right']");
 
+            if (this.model.get("_articleBlockSlider")._hasButtons && this.blockEnabled[_currentBlock]) {
+              $left.html(this.blockBack[_currentBlock]).a11y_text();
+              $right.html(this.blockForward[_currentBlock]).a11y_text();
+            }
+
             if (_currentBlock === 0) {
                 $left.a11y_cntrl_enabled(false);
                 $right.a11y_cntrl_enabled(true);
@@ -247,6 +252,22 @@ define([
         },
 
         _onBlockSliderReady: function() {
+            // Collect data from blocks
+            this._blocks = this.model.getChildren().models;
+            this._totalBlocks = this._blocks.length;
+
+            this.blockEnabled = [];
+            this.blockForward = [];
+            this.blockBack = [];
+
+            for (var i = 0, l = this._totalBlocks; i < l; i++) {
+              if (this._blocks[i].has('_articleBlockSlider')) {
+                this.blockEnabled[i] = this._blocks[i].get('_articleBlockSlider')._isEnabled;
+                this.blockForward[i] = this._blocks[i].get('_articleBlockSlider').forward;
+                this.blockBack[i] = this._blocks[i].get('_articleBlockSlider').back;
+              }
+            }
+
             this._blockSliderHideOthers();
             _.delay(_.bind(function(){
                 this._blockSliderConfigureControls(false);

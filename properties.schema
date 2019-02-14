@@ -59,6 +59,15 @@
                   "validators": [],
                   "help": "Defines which screen sizes the Article Block Slider displays the navigation elements on. Acceptable values are large, medium and small - or a comma-separated list of combinations thereof e.g. 'large medium'."
                 },
+                "_hasButtons": {
+                  "type": "boolean",
+                  "required": false,
+                  "default": false,
+                  "title": "Has Buttons",
+                  "inputType": "Checkbox",
+                  "validators": [],
+                  "help": "Turns the button navigation on and off. If this property is checked, you must uncheck 'Has Tabs' and 'Has Arrows'."
+                },
                 "_hasTabs": {
                   "type":"boolean",
                   "required":true,
@@ -66,7 +75,7 @@
                   "title": "Has Tabs",
                   "inputType": "Checkbox",
                   "validators": [],
-                  "help": "Turns the tab navigation on and off. If this property is checked, you must uncheck 'Has Arrows'."
+                  "help": "Turns the tab navigation on and off. If this property is checked, you must uncheck 'Has Buttons' and 'Has Arrows'."
                 },
                 "_hasArrows": {
                   "type":"boolean",
@@ -75,7 +84,7 @@
                   "title": "Has Arrows",
                   "inputType": "Checkbox",
                   "validators": [],
-                  "help": "Turns the arrow navigation on and off. If this property is checked, you must uncheck 'Has Tabs'."
+                  "help": "Turns the arrow navigation on and off. If this property is checked, you must uncheck 'Has Buttons' and 'Has Tabs'."
                 },
                 "_startIndex": {
                   "type":"number",
@@ -127,7 +136,41 @@
           }
         },
         "block": {
-          "type":"object"
+          "type": "object",
+          "properties": {
+            "_articleBlockSlider": {
+              "type": "object",
+              "required": false,
+              "legend": "BlockSlider",
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "required": true,
+                  "title": "Is Enabled",
+                  "inputType": "Checkbox",
+                  "validators": []
+                },
+                "forward": {
+                  "type": "string",
+                  "required": false,
+                  "default": "",
+                  "title": "Forward Button Text",
+                  "inputType": "Text",
+                  "validators": [],
+                  "translatable": true
+                },
+                "back": {
+                  "type": "string",
+                  "required": false,
+                  "default": "",
+                  "title": "Back Button Text",
+                  "inputType": "Text",
+                  "validators": [],
+                  "translatable": true
+                }
+              }
+            }
+          }
         },
         "component": {
           "type":"object"

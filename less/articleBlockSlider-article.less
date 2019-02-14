@@ -105,6 +105,44 @@
 		}
 	}
 
+	// Buttons
+	.navigation-button {
+		background-color: @button-color;
+		display: block;
+		position: absolute;
+		text-decoration: none;
+		z-index: 10;
+
+		.no-touch &:hover {
+			background-color: @button-color-hover;
+		}
+
+		&[disabled="disabled"] {
+			background-color: @button-color-disabled;
+			cursor: default;
+
+			.no-touch &:hover {
+				background-color: @button-color-disabled;
+			}
+		}
+
+		&[data-block-slider='left'] {
+			left: 0;
+			.dir-rtl & {
+	         left: inherit;
+	         right: 0;
+	      }
+		}
+
+		&[data-block-slider='right'] {
+			right: 0;
+			.dir-rtl & {
+	        right: inherit;
+	        left: 0;
+	     }
+		}
+	}
+
 	// Arrow Buttons
 	.item-button-arrow {
 		background-color: @button-color;
@@ -267,6 +305,9 @@
 				max-width: @max-width;
 				padding: 0px;
 			}
+		}
+		.navigation-button {
+			top: 46% !important;
 		}
 		.item-button-arrow {
 			top: 50% !important;

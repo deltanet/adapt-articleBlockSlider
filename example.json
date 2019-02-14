@@ -5,6 +5,7 @@
     "_slideAnimationDuration": 600,
     "_heightAnimationDuration": 300,
     "_isEnabledOnScreenSizes": "large",
+    "_hasButtons": false,
     "_hasTabs": false,
     "_hasArrows": true,
     "_startIndex": 0,
@@ -12,4 +13,12 @@
     "_minHeight": null,
     "_fullWidth": true,
     "_progressLocation": "top" // top - bottom - none
+}
+
+//blocks.json
+
+"_articleBlockSlider": {
+    "_isEnabled": false,
+    "forward": "",
+    "back": ""
 }
