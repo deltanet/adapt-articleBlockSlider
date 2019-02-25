@@ -140,6 +140,18 @@ define([
             }
 
             this.model.set("_itemButtons", itemButtons);
+
+            this.blockEnabled = [];
+            this.blockForward = [];
+            this.blockBack = [];
+
+            for (var i = 0, l = totalBlocks; i < l; i++) {
+              if (blocks[i].has('_articleBlockSlider')) {
+                this.blockEnabled[i] = blocks[i].get('_articleBlockSlider')._isEnabled;
+                this.blockForward[i] = blocks[i].get('_articleBlockSlider').forward;
+                this.blockBack[i] = blocks[i].get('_articleBlockSlider').back;
+              }
+            }
         },
 
         _onBlockComplete: function() {
@@ -252,22 +264,6 @@ define([
         },
 
         _onBlockSliderReady: function() {
-            // Collect data from blocks
-            this._blocks = this.model.getChildren().models;
-            this._totalBlocks = this._blocks.length;
-
-            this.blockEnabled = [];
-            this.blockForward = [];
-            this.blockBack = [];
-
-            for (var i = 0, l = this._totalBlocks; i < l; i++) {
-              if (this._blocks[i].has('_articleBlockSlider')) {
-                this.blockEnabled[i] = this._blocks[i].get('_articleBlockSlider')._isEnabled;
-                this.blockForward[i] = this._blocks[i].get('_articleBlockSlider').forward;
-                this.blockBack[i] = this._blocks[i].get('_articleBlockSlider').back;
-              }
-            }
-
             this._blockSliderHideOthers();
             _.delay(_.bind(function(){
                 this._blockSliderConfigureControls(false);
