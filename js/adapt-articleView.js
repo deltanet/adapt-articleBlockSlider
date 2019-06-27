@@ -62,7 +62,7 @@ define([
         },
 
         render: function() {
-          
+
             if (this.model.isBlockSliderEnabled()) {
 
                 this._blockSliderRender();
@@ -222,11 +222,9 @@ define([
 
             $blocks.a11y_on(false).eq(_currentBlock).a11y_on(true);
 
-            if(Adapt.accessibility.isActive()) {// prevents https://github.com/cgkineo/adapt-articleBlockSlider/issues/28
-                _.delay(_.bind(function() {
-                    if ($blocks.eq(_currentBlock).onscreen().onscreen) $blocks.eq(_currentBlock).a11y_focus();
-                }, this), duration);
-            }
+            _.delay(_.bind(function() {
+                if ($blocks.eq(_currentBlock).onscreen().onscreen) $blocks.eq(_currentBlock).a11y_focus();
+            }, this), duration);
         },
 
         _blockSliderSetButtonLayout: function() {

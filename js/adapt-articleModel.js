@@ -6,7 +6,7 @@ define([
 
         isBlockSliderEnabled: function() {
             var config = this.get('_articleBlockSlider');
-            if (!config || !config._isEnabled || (config._isDisabledWhenAccessibilityActive && Adapt.accessibility.isActive())) {
+            if (!config || !config._isEnabled) {
                 return false;
             }
 

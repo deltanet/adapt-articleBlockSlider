@@ -14,11 +14,9 @@ If **Article Block Slider** has been uninstalled from the Adapt authoring tool, 
 
 **Article**
 
-**_articleBlockSlider** (object): The Article Block Slider object that contains values for **_isEnabled**, **_isDisabledWhenAccessibilityActive**, **_slideAnimationDuration**, **_heightAnimationDuration**, **_isEnabledOnScreenSizes**, **_hasTabs**, **_hasArrows**, **_startIndex**, **_hasUniformHeight**, and **_minHeight**.
+**_articleBlockSlider** (object): The Article Block Slider object that contains values for **_isEnabled**, **_slideAnimationDuration**, **_heightAnimationDuration**, **_isEnabledOnScreenSizes**, **_hasTabs**, **_hasArrows**, **_startIndex**, **_hasUniformHeight**, and **_minHeight**.
 
 >**_isEnabled** (boolean): Turns Article Block Slider on and off. Acceptable values are `true` and `false`.
-
->**_isDisabledWhenAccessibilityActive** (boolean): Disables this extension when accessibility is active to simplify navigation for screen reader users. Acceptable values are `true` and `false`.
 
 >**_slideAnimationDuration** (number): Sets the slide duration, in milliseconds, of the animation between blocks.
 
