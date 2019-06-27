@@ -27,10 +27,14 @@ define([
         },
 
         preRender: function() {
-
             AdaptArticleView.prototype.preRender.call(this);
-            if (this.model.isBlockSliderEnabled()) this._blockSliderPreRender();
 
+            if (!this.model.isBlockSliderEnabled()) {
+                this.$el.addClass('article-block-slider-disabled');
+                return;
+            }
+
+            this._blockSliderPreRender();
         },
 
         _blockSliderPreRender: function() {
@@ -40,16 +44,17 @@ define([
 
         _blockSliderSetupEventListeners: function() {
 
-            this._onBlockSliderResize = _.bind(this._onBlockSliderResize, this);
             this._blockSliderResizeHeight = _.bind(this._blockSliderResizeHeight, this);
 
-            this.listenTo(Adapt, "device:resize", this._onBlockSliderResize);
-            this.listenTo(Adapt, "device:changed", this._onBlockSliderDeviceChanged);
+            this.listenTo(Adapt, {
+                "device:resize": this._onBlockSliderResize,
+                "device:changed": this._onBlockSliderDeviceChanged,
+                "page:scrollTo": this._onBlockSliderPageScrollTo,
+                "page:scrolledTo": this._onBlockSliderPageScrolledTo
+            });
 
             this.listenToOnce(Adapt, "remove", this._onBlockSliderRemove);
             this.listenToOnce(this.model, "change:_isReady", this._onBlockSliderReady);
-
-            this.listenTo(Adapt, "page:scrollTo", this._onBlockSliderPageScrollTo);
 
             var duration = this.model.get("_articleBlockSlider")._slideAnimationDuration || 200;
 
@@ -57,11 +62,13 @@ define([
         },
 
         render: function() {
+          
             if (this.model.isBlockSliderEnabled()) {
 
                 this._blockSliderRender();
 
             } else AdaptArticleView.prototype.render.call(this);
+
         },
 
         _blockSliderRender: function() {
@@ -215,12 +222,11 @@ define([
 
             $blocks.a11y_on(false).eq(_currentBlock).a11y_on(true);
 
-            // Commented out as this breaks in Adapt v2.0.15
-            //if(Adapt.accessibility.isActive()) {// prevents https://github.com/cgkineo/adapt-articleBlockSlider/issues/28
+            if(Adapt.accessibility.isActive()) {// prevents https://github.com/cgkineo/adapt-articleBlockSlider/issues/28
                 _.delay(_.bind(function() {
                     if ($blocks.eq(_currentBlock).onscreen().onscreen) $blocks.eq(_currentBlock).a11y_focus();
                 }, this), duration);
-            //}
+            }
         },
 
         _blockSliderSetButtonLayout: function() {
@@ -233,25 +239,6 @@ define([
 
         _blockSliderPostRender: function() {
             this._blockSliderConfigureControls(false);
-
-            if (this.model.get("_articleBlockSlider")._hasTabs) {
-                var parentHeight = this.$('.item-button').parent().height();
-                this.$('.item-button').css({
-                    height: parentHeight + 'px'
-                });
-
-                var toolbarHeight = this.$('.article-block-toolbar').height();
-                var additionalMargin = '30';
-                this.$('.article-block-toolbar').css({
-                    top: '-' + (toolbarHeight + (additionalMargin/2)) + 'px'
-                });
-
-                var toolbarMargin = parseFloat(toolbarHeight) + parseFloat(additionalMargin);
-                this.$('.article-block-slider').css({
-                    marginTop: toolbarMargin + 'px'
-                });
-                this._blockSliderSetButtonLayout();
-            }
 
             this._onBlockSliderDeviceChanged();
 
@@ -422,7 +409,7 @@ define([
             this._blockSliderResizeWidth(false);
             this._blockSliderResizeHeight(false);
             this._blockSliderScrollToCurrent(false);
-
+            this._blockSliderResizeTab();
             Adapt.trigger('blockslider:resize');
         },
 
@@ -450,9 +437,9 @@ define([
 
             var maxHeight = -1;
             $container.find(".block").each(function() {
-
-            if ($(this).height() > maxHeight)
-                maxHeight = $(this).height();
+                if ($(this).height() > maxHeight) {
+                    maxHeight = $(this).height();
+                }
             });
 
             var duration = (this.model.get("_articleBlockSlider")._heightAnimationDuration || 200) * 2;
@@ -487,6 +474,33 @@ define([
             if (minHeight) {
                 $container.css({"min-height": minHeight+"px"});
             }
+
+        },
+
+        _blockSliderResizeTab: function() {
+            if (!this.model.get("_articleBlockSlider")._hasTabs) return;
+
+            this._blockSliderSetButtonLayout();
+
+            this.$('.item-button').css({
+                height: ""
+            });
+
+            var parentHeight = this.$('.item-button').parent().height();
+            this.$('.item-button').css({
+                height: parentHeight + 'px'
+            });
+
+            var toolbarHeight = this.$('.article-block-toolbar').height();
+            var additionalMargin = '30';
+            this.$('.article-block-toolbar').css({
+                top: '-' + (toolbarHeight + (additionalMargin/2)) + 'px'
+            });
+
+            var toolbarMargin = parseFloat(toolbarHeight) + parseFloat(additionalMargin);
+            this.$('.article-block-slider').css({
+                marginTop: toolbarMargin + 'px'
+            });
         },
 
         _blockSliderResizeWidth: function() {
