@@ -68,6 +68,15 @@
                   "validators": [],
                   "help": "Defines which screen sizes the Article Block Slider displays the navigation elements on. Acceptable values are large, medium and small - or a comma-separated list of combinations thereof e.g. 'large medium'."
                 },
+                "_hasButtons": {
+                  "type": "boolean",
+                  "required": false,
+                  "default": false,
+                  "title": "Has Buttons",
+                  "inputType": "Checkbox",
+                  "validators": [],
+                  "help": "Turns the button navigation on and off. If this property is checked, you must uncheck 'Has Tabs' and 'Has Arrows'."
+                },
                 "_hasTabs": {
                   "type": "boolean",
                   "required": true,
@@ -75,7 +84,7 @@
                   "title": "Has Tabs",
                   "inputType": "Checkbox",
                   "validators": [],
-                  "help": "Turns the tab navigation on and off. If this property is checked, you must uncheck 'Has Arrows'."
+                  "help": "Turns the tab navigation on and off. If this property is checked, you must uncheck 'Has Buttons' and 'Has Arrows'."
                 },
                 "_hasArrows": {
                   "type": "boolean",
@@ -84,7 +93,7 @@
                   "title": "Has Arrows",
                   "inputType": "Checkbox",
                   "validators": [],
-                  "help": "Turns the arrow navigation on and off. If this property is checked, you must uncheck 'Has Tabs'."
+                  "help": "Turns the arrow navigation on and off. If this property is checked, you must uncheck 'Has Buttons' and 'Has Tabs'."
                 },
                 "_startIndex": {
                   "type": "number",
@@ -112,13 +121,65 @@
                   "inputType": "Number",
                   "validators": ["number"],
                   "help": "Sets a minimum height on the .article-block-slider container class."
+                },
+                "_fullWidth": {
+                  "type":"boolean",
+                  "required":true,
+                  "default": true,
+                  "title": "Full Width Layout",
+                  "inputType": { "type": "Boolean", "options": [false, true]},
+                  "validators": [],
+                  "help": "Sets whether the layout is full width. Acceptable values are true and false."
+                },
+                "_progressLocation": {
+                  "type": "string",
+                  "required": true,
+                  "default": "top",
+                  "title": "Progress Location",
+                  "inputType": "Text",
+                  "validators": [],
+                  "help": "Defines the location of the progress bar. Acceptable values are top, bottom and none."
                 }
               }
             }
           }
         },
         "block": {
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "_articleBlockSlider": {
+              "type": "object",
+              "required": false,
+              "legend": "BlockSlider",
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "required": true,
+                  "title": "Is Enabled",
+                  "inputType": "Checkbox",
+                  "validators": []
+                },
+                "forward": {
+                  "type": "string",
+                  "required": false,
+                  "default": "",
+                  "title": "Forward Button Text",
+                  "inputType": "Text",
+                  "validators": [],
+                  "translatable": true
+                },
+                "back": {
+                  "type": "string",
+                  "required": false,
+                  "default": "",
+                  "title": "Back Button Text",
+                  "inputType": "Text",
+                  "validators": [],
+                  "translatable": true
+                }
+              }
+            }
+          }
         },
         "component": {
           "type": "object"

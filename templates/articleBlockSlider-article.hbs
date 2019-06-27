@@ -1,9 +1,4 @@
-{{! Maintainers - Daryl Hedley}}
 {{! .block-container: Adapt will place the articles blocks inside this class}}
-{{#if _articleBackgroundTop}}
-<div class="article-inner-top" style="background-image:url({{_articleBackgroundTop.src}}); height:{{_articleBackgroundTop.height}}px"></div>
-{{/if}}
-
 <div class="article-inner">
     {{! Check if a page title exist and render it}}
     {{#if displayTitle}}
@@ -29,14 +24,25 @@
     </div>
     {{/if}}
     <div class="article-block-organise{{#if _articleBlockSlider._hasArrows}} has-arrows{{/if}}{{#if _articleBlockSlider._hasTabs}} has-tabs{{/if}}" role="region" {{#if _accessibility._ariaRegions.articleBlockSlider}}tabindex="0" aria-label="{{_accessibility._ariaRegions.articleBlockSlider}}"{{/if}}>
+    	{{#if _articleBlockSlider._progressLocation}}
+	    <div class="article-block-progressbar article-block-progressTop">
+			{{#each _itemButtons}}
+				<div class="toolbar-progress component-item-color component-item-border" data-block-slider="index" data-block-slider-index="{{this._index}}"></div>
+			{{/each}}
+		</div>
+	    {{/if}}
 	    <div class="article-block-slider clearfix" {{#if _articleBlockSlider._minHeight}}style="min-height: {{{_articleBlockSlider._minHeight}}}px"{{/if}}>
 	        <div class="block-container clearfix">
-
 	        </div>
 	    </div>
 	    <div class="article-block-toolbar clearfix">
-	        
 	        <div class="item-button-container clearfix">
+              {{#if _articleBlockSlider._hasButtons}}
+                  <button class="button navigation-button" data-block-slider="left" aria-label="{{_globals._accessibility._ariaLabels.previous}}"></button>
+              {{/if}}
+              {{#if _articleBlockSlider._hasButtons}}
+                  <button class="button navigation-button" data-block-slider="right" aria-label="{{_globals._accessibility._ariaLabels.next}}"></button>
+              {{/if}}
 	            {{#if _articleBlockSlider._hasArrows}}
 	                <button class="base item-button-arrow" data-block-slider="left" aria-label="{{_globals._accessibility._ariaLabels.previous}}">
 	                    <div class="icon icon-controls-left"></div>
@@ -52,10 +58,15 @@
 	                <button class="base item-button {{_className}}" aria-label="{{_title}}" data-block-slider="index" data-block-slider-index="{{this._index}}"><span class="item-button-inner">{{_title}}</span></button>
 	            {{/each}}
 	            {{/if}}
-	            
 	        </div>
-	         
 	    </div>
+	    {{#if _articleBlockSlider._progressLocation}}
+	    <div class="article-block-progressbar article-block-progressBottom">
+			{{#each _itemButtons}}
+				<div class="toolbar-progress component-item-color component-item-border" data-block-slider="index" data-block-slider-index="{{this._index}}"></div>
+			{{/each}}
+		</div>
+	    {{/if}}
 	</div>
 	<div class="article-block-bottombar clearfix"></div>
 </div>

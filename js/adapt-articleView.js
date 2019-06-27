@@ -59,11 +59,10 @@ define([
             var duration = this.model.get("_articleBlockSlider")._slideAnimationDuration || 200;
 
             this._blockSliderHideOthers = debounce(_.bind(this._blockSliderHideOthers, this), duration);
-
         },
 
         render: function() {
-
+          
             if (this.model.isBlockSliderEnabled()) {
 
                 this._blockSliderRender();
@@ -85,6 +84,28 @@ define([
 
             this.$el.addClass('article-block-slider-enabled');
 
+            var progressLoc = this.model.get('_articleBlockSlider')._progressLocation;
+
+            if(progressLoc == 'top') {
+                this.$('.article-block-progressBottom').remove();
+                this.$('.article-block-toolbar').addClass('top');
+            }
+
+            if(progressLoc == 'bottom') {
+                this.$('.article-block-progressTop').remove();
+                this.$('.article-block-toolbar').addClass('bottom');
+            }
+
+            if(progressLoc == 'none') {
+                this.$('.article-block-progressTop').remove();
+                this.$('.article-block-progressBottom').remove();
+                this.$('.article-block-toolbar').addClass('none');
+            }
+
+            if(this.model.get('_articleBlockSlider')._fullWidth) {
+                this.$el.addClass('fullwidth');
+            }
+
             this.delegateEvents();
 
             this.$el.imageready(_.bind(function() {
@@ -95,6 +116,18 @@ define([
         },
 
         _blockSliderConfigureVariables: function() {
+
+            this.model.set('_marginDir', 'left');
+            if (Adapt.config.get('_defaultDirection') == 'rtl') {
+                this.model.set('_marginDir', 'right');
+            }
+
+            var slideWidth = this.$('.block-container').width();
+            var stage = this.model.get('_stage');
+            var margin = -(stage * slideWidth);
+
+            this.$('.block-container').css(('margin-' + this.model.get('_marginDir')), margin);
+
             var blocks = this.model.getChildren().models;
             var totalBlocks = blocks.length;
 
@@ -110,9 +143,34 @@ define([
                     _includeNumber: i !== 0,
                     _title: blocks[i].get('title')
                 });
+                this.listenTo(blocks[i], "change:_isComplete", this._onBlockComplete);
             }
 
             this.model.set("_itemButtons", itemButtons);
+
+            this.blockEnabled = [];
+            this.blockForward = [];
+            this.blockBack = [];
+
+            for (var i = 0, l = totalBlocks; i < l; i++) {
+              if (blocks[i].has('_articleBlockSlider')) {
+                this.blockEnabled[i] = blocks[i].get('_articleBlockSlider')._isEnabled;
+                this.blockForward[i] = blocks[i].get('_articleBlockSlider').forward;
+                this.blockBack[i] = blocks[i].get('_articleBlockSlider').back;
+              }
+            }
+        },
+
+        _onBlockComplete: function() {
+          var _currentBlock = this.model.get("_currentBlock");
+          var _totalBlocks = this.model.get("_totalBlocks");
+          var $right = this.$el.find("[data-block-slider='right']");
+          var blocks = this.model.getChildren().models;
+
+          if(blocks[_currentBlock].get('_isComplete') == true && (_currentBlock < (_totalBlocks - 1))) {
+            $right.a11y_cntrl_enabled(true);
+          }
+
         },
 
         _blockSliderConfigureControls: function(animate) {
@@ -128,6 +186,11 @@ define([
             var $left = this.$el.find("[data-block-slider='left']");
             var $right = this.$el.find("[data-block-slider='right']");
 
+            if (this.model.get("_articleBlockSlider")._hasButtons && this.blockEnabled[_currentBlock]) {
+              $left.html(this.blockBack[_currentBlock]).a11y_text();
+              $right.html(this.blockForward[_currentBlock]).a11y_text();
+            }
+
             if (_currentBlock === 0) {
                 $left.a11y_cntrl_enabled(false);
                 $right.a11y_cntrl_enabled(true);
@@ -137,6 +200,17 @@ define([
             } else {
                 $left.a11y_cntrl_enabled(true);
                 $right.a11y_cntrl_enabled(true);
+            }
+
+            if(_currentBlock < (_totalBlocks - 1)) {
+              // Reset
+              $right.a11y_cntrl_enabled(true);
+
+              var blocks = this.model.getChildren().models;
+
+              if(blocks[_currentBlock].get('_isComplete') == false) {
+                $right.a11y_cntrl_enabled(false);
+              }
             }
 
             var $indexes = this.$el.find("[data-block-slider='index']");
@@ -268,17 +342,20 @@ define([
             if (this._disableAnimationOnce) animate = false;
             if (this._disableAnimations) animate = false;
 
+            var movementSize = this.$('.article-block-slider').width();
+            var marginDir = {};
+
             if (animate === false) {
                 _.defer(_.bind(function(){
-                    $container.scrollLeft(totalLeft );
-                    this._blockSliderHideOthers();
+                    marginDir['margin-' + this.model.get('_marginDir')] = -(movementSize * currentBlock);
+                    this.$('.block-container').css(marginDir);
                 }, this));
             } else {
-                $container.stop(true).animate({scrollLeft:totalLeft}, duration, _.bind(function() {
-                    $container.scrollLeft(totalLeft );
-                    this._blockSliderHideOthers();
-                }, this));
+                marginDir['margin-' + this.model.get('_marginDir')] = -(movementSize * currentBlock);
+                this.$('.block-container').velocity("stop", true).velocity(marginDir);
             }
+
+            this._blockSliderHideOthers();
 
         },
 
@@ -321,8 +398,11 @@ define([
         _blockSliderSetVisible: function(model, value) {
             var id = model.get("_id");
 
-            this.$el.find("."+id + " *").css("visibility", value ? "" : "hidden");
-
+            if(value) {
+              this.$el.find("."+id + " *").removeClass('element-hidden');
+            } else {
+              this.$el.find("."+id + " *").addClass('element-hidden');
+            }
         },
 
         _onBlockSliderResize: function() {
@@ -330,11 +410,14 @@ define([
             this._blockSliderResizeHeight(false);
             this._blockSliderScrollToCurrent(false);
             this._blockSliderResizeTab();
+            Adapt.trigger('blockslider:resize');
         },
 
         _blockSliderResizeHeight: function(animate) {
             var $container = this.$el.find(".article-block-slider");
             var isEnabled = this._blockSliderIsEnabledOnScreenSizes();
+
+            var minHeight = this.model.get("_articleBlockSlider")._minHeight;
 
             if (!isEnabled) {
                 this._blockSliderShowAll();
@@ -343,6 +426,11 @@ define([
 
             var currentBlock = this.model.get("_currentBlock");
             var $blocks = this.$el.find(".block");
+            var $blockInners = this.$el.find(".block-inner");
+
+            if (minHeight) {
+                $blockInners.css({"min-height": minHeight+"px"});
+            }
 
             var currentHeight = $container.height();
             var blockHeight = $blocks.eq(currentBlock).height();
@@ -383,7 +471,6 @@ define([
 
             }
 
-            var minHeight = this.model.get("_articleBlockSlider")._minHeight;
             if (minHeight) {
                 $container.css({"min-height": minHeight+"px"});
             }
@@ -423,6 +510,7 @@ define([
 
             if (!isEnabled) {
                 $blocks.css("width", "");
+                $blockContainer.css(('margin-' + this.model.get('_marginDir')), "0px");
                 return $blockContainer.css({"width": "100%"});
             }
 
@@ -434,16 +522,17 @@ define([
             var totalWidth = $blocks.length * (blockWidth);
 
             $blockContainer.width(totalWidth + "px");
-
         },
 
         _onBlockSliderDeviceChanged: function() {
             var isEnabled = this._blockSliderIsEnabledOnScreenSizes();
 
             if (isEnabled) {
-                this.$(".article-block-toolbar, .article-block-bottombar").removeClass("display-none")
+                this.$(".article-block-toolbar, .article-block-bottombar, .article-block-progressbar").removeClass("display-none");
             } else {
-                this.$(".article-block-toolbar, .article-block-bottombar").addClass("display-none");
+                this.$(".article-block-toolbar, .article-block-bottombar, .article-block-progressbar").addClass("display-none");
+                this.$('.block-inner').css("min-height","10px");
+                this.$('.block-container').css(('margin-' + this.model.get('_marginDir')), "0px");
             }
 
             _.delay(function() {
@@ -485,12 +574,6 @@ define([
                     return;
                 }
             }
-        },
-
-        _onBlockSliderPageScrolledTo: function() {
-            _.defer(_.bind(function() {
-                this._blockSliderScrollToCurrent(false);
-            }, this));
         },
 
         _onBlockSliderRemove: function() {
