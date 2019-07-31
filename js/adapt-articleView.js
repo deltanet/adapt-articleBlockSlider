@@ -187,8 +187,8 @@ define([
             var $right = this.$el.find("[data-block-slider='right']");
 
             if (this.model.get("_articleBlockSlider")._hasButtons && this.blockEnabled[_currentBlock]) {
-              $left.html(this.blockBack[_currentBlock]).a11y_text();
-              $right.html(this.blockForward[_currentBlock]).a11y_text();
+              $left.html(this.blockBack[_currentBlock]);
+              $right.html(this.blockForward[_currentBlock]);
             }
 
             if (_currentBlock === 0) {
