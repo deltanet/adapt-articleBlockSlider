@@ -13,7 +13,8 @@ If **Article Block Slider** has been uninstalled from the Adapt authoring tool, 
 ## Settings Overview  
 
 **Article**
-The **Article Block Slider** attribute group at article level contains values for **_isEnabled**, **_slideAnimationDuration**, **_heightAnimationDuration**, **_isEnabledOnScreenSizes**, **_hasButtons**, **_hasTabs**, **_hasArrows**, **_startIndex**, **_hasUniformHeight**, and **_minHeight**.
+
+**_articleBlockSlider** (object): The Article Block Slider object that contains values for **_isEnabled**, **_slideAnimationDuration**, **_heightAnimationDuration**, **_isEnabledOnScreenSizes**, **_hasTabs**, **_hasArrows**, **_startIndex**, **_hasUniformHeight**, and **_minHeight**.
 
 >**_isEnabled** (boolean): Turns Article Block Slider on and off. Acceptable values are `true` and `false`.
 
@@ -51,8 +52,8 @@ Only one navigation element (Arrows or Tabs) should be active at any one time.
 The **Article Block Slider** and **Quicknav** extensions don't interact well together when the **Article Block Slider** is the last article on a page with an enabled **Quicknav.**  
 
 ----------------------------
-**Version number:**  2.2.1  
-**Framework versions:**  2.0.4  
+**Version number:**  3.0.0  
+**Framework versions:**  4+  
 **Author / maintainer:** Kineo / DeltaNet  
 **Accessibility support:** WAI AA  
 **RTL support:** Yes  
