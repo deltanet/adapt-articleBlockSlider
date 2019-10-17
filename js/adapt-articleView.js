@@ -286,7 +286,6 @@ define([
 
         _blockSliderMoveIndex: function(index, animate) {
             if (this.model.get("_currentBlock") != index) {
-
                 this.model.set("_currentBlock", index);
 
                 Adapt.trigger('media:stop');//in case any of the blocks contain media that's been left playing by the user
@@ -526,9 +525,9 @@ define([
             var isEnabled = this._blockSliderIsEnabledOnScreenSizes();
 
             if (isEnabled) {
-                this.$(".article-block-toolbar, .article-block-bottombar, .article-block-progressbar").removeClass("display-none");
+                this.$(".article-block-toolbar, .article-block-progressbar").removeClass("display-none");
             } else {
-                this.$(".article-block-toolbar, .article-block-bottombar, .article-block-progressbar").addClass("display-none");
+                this.$(".article-block-toolbar, .article-block-progressbar").addClass("display-none");
                 this.$('.block-inner').css("min-height","10px");
                 this.$('.block-container').css(('margin-' + this.model.get('_marginDir')), "0px");
             }
