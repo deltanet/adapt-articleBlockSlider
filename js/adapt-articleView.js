@@ -14,11 +14,9 @@ define([
             clearTimeout(handle);
         };
         return debounced;
-
     }
 
     var BlockSliderView = {
-
         _disableAnimationOnce: false,
         _disableAnimations: false,
 
@@ -62,13 +60,11 @@ define([
         },
 
         render: function() {
-
             if (this.model.isBlockSliderEnabled()) {
 
                 this._blockSliderRender();
 
             } else AdaptArticleView.prototype.render.call(this);
-
         },
 
         _blockSliderRender: function() {
@@ -116,7 +112,6 @@ define([
         },
 
         _blockSliderConfigureVariables: function() {
-
             this.model.set('_marginDir', 'left');
             if (Adapt.config.get('_defaultDirection') == 'rtl') {
                 this.model.set('_marginDir', 'right');
@@ -167,14 +162,12 @@ define([
           var $right = this.$el.find("[data-block-slider='right']");
           var blocks = this.model.getChildren().models;
 
-          if(blocks[_currentBlock].get('_isComplete') == true && (_currentBlock < (_totalBlocks - 1))) {
+          if (blocks[_currentBlock].get('_isComplete') == true && (_currentBlock < (_totalBlocks - 1))) {
             $right.a11y_cntrl_enabled(true);
           }
-
         },
 
         _blockSliderConfigureControls: function(animate) {
-
             var duration = this.model.get("_articleBlockSlider")._slideAnimationDuration || 200;
 
             if (this._disableAnimationOnce) animate = false;
@@ -223,6 +216,7 @@ define([
             $blocks.a11y_on(false).eq(_currentBlock).a11y_on(true);
 
             _.delay(_.bind(function() {
+                this.navClicked = false;
                 if ($blocks.eq(_currentBlock).onscreen().onscreen) $blocks.eq(_currentBlock).a11y_focus();
             }, this), duration);
         },
@@ -245,7 +239,6 @@ define([
             this._blockSliderMoveIndex(startIndex, false);
 
             Adapt.trigger(this.constructor.type + 'View:postRender', this);
-
         },
 
         _onBlockSliderReady: function() {
@@ -259,6 +252,10 @@ define([
 
         _onBlockSliderClick: function(event) {
             event.preventDefault();
+
+            if (this.navClicked) return;
+
+            this.navClicked = true;
 
             var id = $(event.currentTarget).attr("data-block-slider");
 
@@ -274,7 +271,6 @@ define([
                 this._blockSliderMoveRight();
                 break;
             }
-
         },
 
         _blockSliderMoveLeft: function() {
@@ -353,7 +349,6 @@ define([
             }
 
             this._blockSliderHideOthers();
-
         },
 
         _blockSliderIsEnabledOnScreenSizes: function() {
@@ -389,7 +384,6 @@ define([
                     this._blockSliderSetVisible(blocks[i], true);
                 }
             }
-
         },
 
         _blockSliderSetVisible: function(model, value) {
@@ -471,7 +465,6 @@ define([
             if (minHeight) {
                 $container.css({"min-height": minHeight+"px"});
             }
-
         },
 
         _blockSliderResizeTab: function() {
