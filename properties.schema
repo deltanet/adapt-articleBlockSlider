@@ -128,7 +128,6 @@
                   "default": "top",
                   "title": "Progress Location",
                   "inputType": {"type": "Select", "options": ["", "top", "bottom", "none"]},
-                  "inputType": "Text",
                   "validators": [],
                   "help": "Defines the location of the progress bar."
                 }
