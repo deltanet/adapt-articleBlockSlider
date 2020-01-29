@@ -60,7 +60,7 @@
       {{#if _articleBlockSlider._progressLocation}}
 	    <div class="article-block-progressbar article-block-progressTop">
   			{{#each _itemButtons}}
-        <div class="toolbar-progress component-item-color component-item-border" data-block-slider="index" data-block-slider-index="{{this._index}}"></div>
+        <div class="toolbar-progress component-item-color component-item-border" data-block-slider-progress="index" data-block-slider-index="{{this._index}}"></div>
   			{{/each}}
       </div>
 	    {{/if}}
@@ -73,7 +73,7 @@
 	    {{#if _articleBlockSlider._progressLocation}}
 	    <div class="article-block-progressbar article-block-progressBottom">
   			{{#each _itemButtons}}
-  			<div class="toolbar-progress component-item-color component-item-border" data-block-slider="index" data-block-slider-index="{{this._index}}"></div>
+  			<div class="toolbar-progress component-item-color component-item-border" data-block-slider-progress="index" data-block-slider-index="{{this._index}}"></div>
   			{{/each}}
   		</div>
 	    {{/if}}

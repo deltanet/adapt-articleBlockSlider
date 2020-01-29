@@ -138,7 +138,6 @@ define([
                     _includeNumber: i !== 0,
                     _title: blocks[i].get('title')
                 });
-                this.listenTo(blocks[i], "change:_isComplete", this._onBlockComplete);
             }
 
             this.model.set("_itemButtons", itemButtons);
@@ -195,13 +194,13 @@ define([
                 $right.a11y_cntrl_enabled(true);
             }
 
-            if(_currentBlock < (_totalBlocks - 1)) {
+            if (_currentBlock < (_totalBlocks - 1)) {
               // Reset
               $right.a11y_cntrl_enabled(true);
 
               var blocks = this.model.getChildren().models;
 
-              if(blocks[_currentBlock].get('_isComplete') == false) {
+              if (blocks[_currentBlock].get('_isComplete') == false) {
                 $right.a11y_cntrl_enabled(false);
               }
             }
@@ -209,6 +208,11 @@ define([
             var $indexes = this.$el.find("[data-block-slider='index']");
             $indexes.a11y_cntrl_enabled(true).removeClass("selected");
             $indexes.eq(_currentBlock).a11y_cntrl_enabled(false).addClass("selected visited");
+
+            // Progress
+            var $progress = this.$el.find("[data-block-slider-progress='index']");
+            $progress.removeClass("selected");
+            $progress.eq(_currentBlock).addClass("selected visited");
 
             var $blocks = this.$el.find(".block");
             if (!$blocks.length) return;
@@ -237,6 +241,11 @@ define([
             var startIndex = this.model.get("_articleBlockSlider")._startIndex || 0;
 
             this._blockSliderMoveIndex(startIndex, false);
+
+            var blocks = this.model.getChildren().models;
+            for (var i = 0, l = blocks.length; i < l; i++) {
+                this.listenTo(blocks[i], "change:_isComplete", this._onBlockComplete);
+            }
 
             Adapt.trigger(this.constructor.type + 'View:postRender', this);
         },
@@ -342,13 +351,13 @@ define([
                 _.defer(_.bind(function(){
                     marginDir['margin-' + this.model.get('_marginDir')] = -(movementSize * currentBlock);
                     this.$('.block-container').css(marginDir);
+                    this._blockSliderHideOthers();
                 }, this));
             } else {
                 marginDir['margin-' + this.model.get('_marginDir')] = -(movementSize * currentBlock);
                 this.$('.block-container').velocity("stop", true).velocity(marginDir);
+                this._blockSliderHideOthers();
             }
-
-            this._blockSliderHideOthers();
         },
 
         _blockSliderIsEnabledOnScreenSizes: function() {
@@ -564,6 +573,12 @@ define([
                     return;
                 }
             }
+        },
+
+        _onBlockSliderPageScrolledTo: function() {
+          _.defer(_.bind(function() {
+            this._blockSliderScrollToCurrent(false);
+          }, this));
         },
 
         _onBlockSliderRemove: function() {
