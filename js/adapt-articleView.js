@@ -331,7 +331,8 @@ define([
             }
 
             var blocks = this.$el.find(".block");
-            var blockWidth = $(blocks[0]).outerWidth();
+            var blockWidth = $container.width();
+
             var totalLeft = this.model.get("_currentBlock") * blockWidth;
 
             this._blockSliderShowAll();
@@ -514,12 +515,10 @@ define([
             }
 
             var $container = this.$el.find(".article-block-slider");
+            var containerWidth = $container.width();
+            $blocks.css("width", containerWidth + "px");
 
-            $blocks.css("width", $container.width()+"px");
-
-            var blockWidth = $($blocks[0]).outerWidth();
-            var totalWidth = $blocks.length * (blockWidth);
-
+            var totalWidth = $blocks.length * (containerWidth);
             $blockContainer.width(totalWidth + "px");
         },
 
