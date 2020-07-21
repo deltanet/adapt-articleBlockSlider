@@ -3,6 +3,19 @@ define([
     'core/js/views/articleView'
 ], function(Adapt, AdaptArticleView) {
 
+    function debounce(callback, timeout) {
+
+        var handle = null;
+        var debounced = function debounced() {
+            clearTimeout(handle);
+            handle = setTimeout(callback, timeout);
+        };
+        debounced.cancel = function cancelDebounce() {
+            clearTimeout(handle);
+        };
+        return debounced;
+    }
+
     var BlockSliderView = {
         _disableAnimationOnce: false,
 
@@ -38,6 +51,10 @@ define([
 
             this.listenToOnce(Adapt, "remove", this._onBlockSliderRemove);
             this.listenToOnce(this.model, "change:_isReady", this._onBlockSliderReady);
+
+            var duration = this.model.get("_articleBlockSlider")._slideAnimationDuration || 200;
+
+            this._blockSliderHideOthers = debounce(_.bind(this._blockSliderHideOthers, this), duration);
         },
 
         render: function() {
@@ -98,7 +115,7 @@ define([
                 this.model.set('_marginDir', 'right');
             }
 
-            var slideWidth = this.$('.block-container').width();
+            var slideWidth = Math.round(this.$('.block-container').width());
             var stage = this.model.get('_stage');
             var margin = -(stage * slideWidth);
 
@@ -231,6 +248,7 @@ define([
         },
 
         _onBlockSliderReady: function() {
+            this._blockSliderHideOthers();
             _.delay(_.bind(function(){
                 this._blockSliderConfigureControls(false);
                 this._onBlockSliderResize();
@@ -274,6 +292,7 @@ define([
 
                 Adapt.trigger('media:stop');//in case any of the blocks contain media that's been left playing by the user
 
+                this._blockSliderSetVisible(this.model.getChildren().models[index], true);
                 this._blockSliderResizeHeight(animate);
                 this._blockSliderScrollToCurrent(animate);
                 this._blockSliderConfigureControls(animate);
@@ -308,26 +327,32 @@ define([
             }
 
             var blocks = this.$el.find(".block");
-            var blockWidth = $container.width();
+            var blockWidth = Math.round($container.width());
 
             var totalLeft = this.model.get("_currentBlock") * blockWidth;
+
+            this._blockSliderShowAll();
+
+            var duration = this.model.get("_articleBlockSlider")._slideAnimationDuration || 200;
 
             var currentBlock = this.model.get("_currentBlock");
             var $currentBlock = $(blocks[currentBlock]);
 
             if (this._disableAnimationOnce) animate = false;
 
-            var movementSize = this.$('.article-block-slider').width();
+            var movementSize = Math.round(this.$('.article-block-slider').width());
             var marginDir = {};
 
             if (animate === false) {
                 _.defer(_.bind(function(){
                     marginDir['margin-' + this.model.get('_marginDir')] = -(movementSize * currentBlock);
                     this.$('.block-container').css(marginDir);
+                    this._blockSliderHideOthers();
                 }, this));
             } else {
                 marginDir['margin-' + this.model.get('_marginDir')] = -(movementSize * currentBlock);
                 this.$('.block-container').velocity("stop", true).velocity(marginDir);
+                this._blockSliderHideOthers();
             }
         },
 
@@ -339,6 +364,41 @@ define([
                 return true;
             }
             return false;
+        },
+
+        _blockSliderShowAll: function() {
+
+            this._blockSliderHideOthers.cancel();
+
+            var blocks = this.model.getChildren().models;
+            var currentIndex = this.model.get("_currentBlock");
+
+            for (var i = 0, l = blocks.length; i < l; i++) {
+                this._blockSliderSetVisible(blocks[i], true);
+            }
+        },
+
+        _blockSliderHideOthers: function() {
+            var blocks = this.model.getChildren().models;
+            var currentIndex = this.model.get("_currentBlock");
+
+            for (var i = 0, l = blocks.length; i < l; i++) {
+                if (i != currentIndex) {
+                    this._blockSliderSetVisible(blocks[i], false);
+                } else {
+                    this._blockSliderSetVisible(blocks[i], true);
+                }
+            }
+        },
+
+        _blockSliderSetVisible: function(model, value) {
+            var id = model.get("_id");
+
+            if(value) {
+              this.$el.find("."+id + " *").removeClass('element-hidden');
+            } else {
+              this.$el.find("."+id + " *").addClass('element-hidden');
+            }
         },
 
         _onBlockSliderResize: function() {
@@ -356,6 +416,7 @@ define([
             var minHeight = this.model.get("_articleBlockSlider")._minHeight;
 
             if (!isEnabled) {
+                this._blockSliderShowAll();
                 return $container.velocity("stop").css({"height": "", "min-height": ""});
             }
 
@@ -448,7 +509,7 @@ define([
             }
 
             var $container = this.$el.find(".article-block-slider");
-            var containerWidth = $container.width();
+            var containerWidth = Math.round($container.width());
             $blocks.css("width", containerWidth + "px");
 
             var totalWidth = $blocks.length * (containerWidth);
