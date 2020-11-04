@@ -1,19 +1,20 @@
 define([
-    'core/js/adapt'
+  'core/js/adapt'
 ], function(Adapt) {
 
-    var BlockSliderModel = {
+  var BlockSliderModel = {
 
-        isBlockSliderEnabled: function() {
-            var config = this.get('_articleBlockSlider');
-            if (!config || !config._isEnabled) {
-                return false;
-            }
+    isBlockSliderEnabled: function() {
+      var config = this.get('_articleBlockSlider');
+      if (!config || !config._isEnabled) {
+        return false;
+      }
 
-            return true;
-        }
+        return true;
+    }
 
-    };
+  };
+  
+  return BlockSliderModel;
 
-    return BlockSliderModel;
 });

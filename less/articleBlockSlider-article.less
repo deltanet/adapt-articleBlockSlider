@@ -1,73 +1,72 @@
-.article-block-slider-enabled {
+.abs {
+	// Calculates the size of an arrow button
+	// Adds block horizontal padding
+	// Attachs extra size to abs slide container when arrows present so content
+	// displays at the same size as other blocks
+	@abs-arrow-spacing: @icon-size + (@icon-padding * 2) + @block-padding-hoz;
 
-	.element-hidden {
-		visibility: hidden;
-	}
+	&__container.has-arrows &:not(.is-fullwidth) {
+		.abs__slide-container {
+			max-width: @device-width-large + (@abs-arrow-spacing * 2);
+		}
 
-	&.article {
-		.article-inner {
-			margin: auto;
-			max-width: @device-width-large;
-			//padding: @block-padding-top 0 @block-padding-bottom;
-			// reduce padding as screen width decreases
-			@media all and (max-width: (@device-width-large + 20px)) {
-				//padding: (@block-padding-top / 2) 20px (@block-padding-bottom / 2);
-			}
-			@media all and (max-width: (@device-width-small + 20px)) {
-				//padding: (@block-padding-top / 3) 10px (@block-padding-bottom / 3);
+		.block__inner {
+			@media (min-width: @device-width-medium) {
+				max-width: inherit;
+				padding-left: @abs-arrow-spacing;
+				padding-right: @abs-arrow-spacing;
 			}
 		}
 	}
 
-	.article-block-organise {
-		margin: 0 auto;
+	&__container {
 		position: relative;
-		width: 100%;
+		.l-container-responsive(@max-width);
 	}
 
-	.article-block-slider {
-		margin: auto;
-		max-width: @device-width-large;
+	&__slide-container {
+		margin: 0 auto;
 		overflow: hidden;
 	}
 
 	.block {
+		.u-float-left;
 		width: 100%;
-		float: left;
-        .dir-rtl & {
-            float: right;
-        }
 	}
 
-	.block-container {
-		position: relative;
-	}
-
-	.article-block-toolbar {
+	&__toolbar {
 		width: 100%;
 
 		&.top {
-			.item-button-arrow {
+			.abs__btn-arrow {
 				top: 0px;
 				margin-top: 0px;
 			}
 		}
 
 		&.bottom {
-			.item-button-arrow {
+			.abs__btn-arrow {
 				margin-top: 0px;
 			}
 		}
 
 		&.none {
-			.item-button-arrow {
+			.abs__btn-arrow {
 				top: 50%;
 				margin-top: -(@icon-size*1.25);
 			}
 		}
 	}
 
-	.item-button-container {
+	&__btn-tab-container {
+    position: absolute;
+    top: 0;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+	&__btn-container {
 		margin: 0 auto;
 		max-width: @device-width-large;
 
@@ -80,49 +79,19 @@
 		padding-bottom: 0px;
 	}
 
-	// Arrows General
-	.has-arrows {
-		.block {
-			.block-inner {
-				// Added padding for arrow navigation
-				@media all and (min-width: @device-width-medium) {
-					padding: @block-padding-top 70px 0;
-				}
-
-				.ie8 & {
-					padding: @block-padding-top 70px 0;
-				}
-
-			}
-			// Removed last block inner padding to even the spacing up on smaller resolutions
-			@media all and (max-width: @device-width-medium) {
-				&:last-child {
-					.block-inner {
-						padding-bottom: 0;
-					}
-				}
-			}
-		}
-	}
-
 	// Buttons
-	.navigation-button {
-		background-color: @button-color;
+	.abs__btn-text {
 		display: block;
 		position: absolute;
 		text-decoration: none;
 		z-index: 10;
 
-		.no-touch &:hover {
-			background-color: @button-color-hover;
-		}
-
 		&[disabled="disabled"] {
-			background-color: @button-color-disabled;
+			background-color: @disabled;
 			cursor: default;
 
 			.no-touch &:hover {
-				background-color: @button-color-disabled;
+				background-color: @disabled;
 			}
 		}
 
@@ -144,77 +113,70 @@
 	}
 
 	// Arrow Buttons
-	.item-button-arrow {
-		background-color: @button-color;
+	.abs__btn-arrow {
 		display: block;
 		height: (@icon-size*2.5);
 		margin-top: -(@icon-size*1.25);
 		position: absolute;
-		text-decoration: none;
-		width: (@icon-size*2.5);
+		top: 50%;
 		z-index: 10;
 
-		.icon {
-			color: @button-text-color;
-			font-size: (@icon-size*1.25);
-			font-weight: bold;
-			margin: (@icon-size/1.5);
-		}
+		background-color: @item-color;
+    color: @item-color-inverted;
 
-		.no-touch &:hover {
-			background-color: @button-color-hover;
-
-			.icon {
-				color: @button-text-color-hover;
-			}
-		}
+    .no-touch &:not(.is-disabled):hover {
+      background-color: @item-color-hover;
+      color: @item-color-inverted-hover;
+      .transition(background-color @duration ease-in, color @duration ease-in;);
+    }
 
 		&[disabled="disabled"] {
-			background-color: @button-color-disabled;
+			background-color: @disabled;
 			cursor: default;
 
 			.no-touch &:hover {
-				background-color: @button-color-disabled;
+				background-color: @disabled;
 			}
 		}
 
 		&[data-block-slider='left'] {
 			left: 0;
 			.dir-rtl & {
-	            left: inherit;
-	            right: 0;
-	        }
+				left: inherit;
+	      right: 0;
+	    }
 		}
 
 		&[data-block-slider='right'] {
 			right: 0;
 			.dir-rtl & {
-	            right: inherit;
-	            left: 0;
-	        }
+	    right: inherit;
+	    left: 0;
+	   }
 		}
+
+		.abs__btn-arrow.is-disabled {
+	    background-color: @disabled;
+	    color: @disabled-inverted;
+	  }
 	}
 
 	// Tabs General
 	.has-tabs {
-		.article-block-slider {
+		.abs__slide-container {
 			@media all and (max-width: @device-width-medium) {
 				margin-top: 0 !important;
 			}
 		}
 
-		.article-block-toolbar {
+		.abs__toolbar {
 			position: absolute;
 		}
 
 		.block {
-			.block-inner {
-				// Added padding to match .item-button-inner margin
+			.block__inner {
+				// Added padding to match .abs__btn-tab-inner margin
 				@media all and (min-width: @device-width-medium) {
-					padding: 0 5px;
-				}
-
-				.ie8 & {
 					padding: 0 5px;
 				}
 
@@ -228,7 +190,7 @@
 			// Removed last block inner padding to even the spacing up on smaller resolutions
 			@media all and (max-width: @device-width-medium) {
 				&:last-child {
-					.block-inner {
+					.block__inner {
 						padding-bottom: 0;
 					}
 				}
@@ -237,112 +199,90 @@
 	}
 
 	// Tab Buttons
-	.item-button {
+	.abs__btn-tab {
 		float: left;
 		text-align: center;
 		text-decoration: none;
 
-		.no-touch &:hover {
-			.item-button-inner {
-				background-color: @button-color-hover;
-			}
-		}
-
 		&[disabled="disabled"] {
-			.item-button-inner {
-				background-color: @button-color-disabled;
-				color: @button-text-color-disabled;
+			.item-btn__inner {
+				background-color: @disabled;
+				color: @disabled-inverted;
 				cursor: default;
 
 				.no-touch &:hover {
-					background-color: @button-color-disabled;
-					color: @button-text-color-disabled;
+					background-color: @disabled;
+					color: @disabled-inverted;
 				}
 			}
 		}
 	}
 
-	.item-button-inner {
-		background-color: @button-color;
-		color: @button-text-color;
+	.item-btn__inner {
 		display: block;
 		margin: 0 5px;
 		padding: 10px;
 	}
 
-	.article-block-progressbar {
-		background-color: @font-color-inverted;
-	    height: (@icon-size*2.5);
+	.abs__progress {
+	  height: (@icon-size*2);
+		padding-top: @icon-size/1.5;
 		max-width: @max-width;
 		text-align: center;
-		&.display-none {
-			display: none;
+
+		&.u-display-none {
+			//display: none;
 		}
 	}
 
-	.toolbar-progress {
-	    width: (@icon-size/2);
-	    height: (@icon-size/2);
-	    display: inline-block;
-	    background-color: @button-color-disabled;
-	    border-radius: 50%;
-	    margin-top: @icon-size;
-	    margin-left: 2px;
-	    margin-right: 2px;
-	    &.selected {
-	        background-color: @button-color;
-	    }
+	.abs__progress-item {
+		width: (@icon-size/1.5);
+	  height: (@icon-size/1.5);
+	  display: inline-block;
+	  background-color: @disabled;
+	  border-radius: 50%;
+		border: 2px solid @font-color-inverted;
+
+	  margin-left: 2px;
+	  margin-right: 2px;
+
+	  &.is-selected {
+			background-color: @btn-color;
+	  }
 	}
 
-	&.display-none {
-		display: none;
+	&.u-display-none {
+		//display: none;
 	}
 
 	///// Full width /////
-	&.fullwidth {
-		&.article {
-			.article-inner {
-				max-width: @max-width;
-				padding: 0px;
-			}
+	&.is-fullwidth {
+		.article__inner {
+			padding: 0px;
+			.l-container-responsive(@max-width);
 		}
-		.navigation-button {
+
+		.abs__slide-container {
+			.l-container-responsive(@max-width);
+		}
+
+		.abs__btn-text {
 			top: 46% !important;
 		}
-		.item-button-arrow {
+
+		.abs__btn-arrow {
 			top: 50% !important;
 			margin-top: -(@icon-size*1.25) !important;
 		}
-		.article-block-slider {
-			max-width: @max-width;
-		}
-		.has-arrows {
-			.block {
-				.block-inner {
-					// Added padding for arrow navigation
-					@media all and (min-width: @device-width-medium) {
-						padding: @block-padding-top 70px @block-padding-bottom;
-					}
 
-					.ie8 & {
-						padding: @block-padding-top 70px @block-padding-bottom;
-					}
-
-					@media all and (max-width: @device-width-medium) {
-						padding-left: 10px;
-						padding-right: 10px;
-					}
-				}
-				// Removed last block inner padding to even the spacing up on smaller resolutions
-				@media all and (max-width: @device-width-medium) {
-					&:last-child {
-						.block-inner {
-							padding-bottom: 0px;
-						}
-					}
+		&__container.has-arrows {
+			.block__inner {
+				@media (min-width: @device-width-medium) {
+					max-width: @device-width-large + (@abs-arrow-spacing * 2);
+					padding-left: @abs-arrow-spacing;
+					padding-right: @abs-arrow-spacing;
 				}
 			}
 		}
 	}
-
 }
