@@ -131,12 +131,7 @@
     }
 
 		&[disabled="disabled"] {
-			background-color: @disabled;
-			cursor: default;
-
-			.no-touch &:hover {
-				background-color: @disabled;
-			}
+      visibility: hidden;
 		}
 
 		&[data-block-slider='left'] {
