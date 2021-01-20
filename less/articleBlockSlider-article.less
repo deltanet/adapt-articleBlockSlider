@@ -5,7 +5,7 @@
 	// displays at the same size as other blocks
 	@abs-arrow-spacing: @icon-size + (@icon-padding * 2) + @block-padding-hoz;
 
-	&__container.has-arrows &:not(.is-fullwidth) {
+	&__container.has-arrows {
 		.abs__slide-container {
 			max-width: @device-width-large + (@abs-arrow-spacing * 2);
 		}
@@ -224,10 +224,6 @@
 		padding-top: @icon-size/1.5;
 		max-width: @max-width;
 		text-align: center;
-
-		&.u-display-none {
-			//display: none;
-		}
 	}
 
 	.abs__progress-item {
@@ -244,10 +240,6 @@
 	  &.is-selected {
 			background-color: @btn-color;
 	  }
-	}
-
-	&.u-display-none {
-		//display: none;
 	}
 
 	///// Full width /////
