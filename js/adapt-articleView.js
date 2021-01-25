@@ -396,6 +396,8 @@ define([
       var $container = this.$el.find('.abs__slide-container');
       var isEnabled = this._blockSliderIsEnabledOnScreenSizes();
 
+      var minHeight = this.model.get('_articleBlockSlider')._minHeight;
+
       if (!isEnabled) {
         this._blockSliderShowAll();
         return $container.velocity('stop').css({'height': '', 'min-height': ''});
@@ -446,7 +448,6 @@ define([
         }
       }
 
-      var minHeight = this.model.get('_articleBlockSlider')._minHeight;
       if (minHeight) {
         $container.css({'min-height': minHeight+'px'});
       }
