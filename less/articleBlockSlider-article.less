@@ -86,8 +86,8 @@
 		text-decoration: none;
 		z-index: 10;
 
-		&[disabled="disabled"] {
-			visibility: hidden;
+		&[aria-disabled="true"] {
+      visibility: hidden;
 		}
 
 		&[data-block-slider='left'] {
@@ -125,7 +125,7 @@
       .transition(background-color @duration ease-in, color @duration ease-in;);
     }
 
-		&[disabled="disabled"] {
+		&[aria-disabled="true"] {
       visibility: hidden;
 		}
 
